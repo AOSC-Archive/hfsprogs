@@ -1,0 +1,17 @@
+hfsprogs (332.14-1) unstable; urgency=low
+
+  * Initial release (Closes: #433168)
+  * debian/control: add dependency on libssl-dev for the hash functions
+  * debian/control: add dependency on quilt
+  * debian/copyright: included the complete text of the APSL 2.0
+  * debian/links: create links for HFS variants of the utils and manpages
+  * debian/rules: use quilt to patch the source, so we get a Makefile for Linux
+  * debian/patches: incorporated patch from Gentoo to work with quilt
+  * debian/patches: included patch to fix *roff warning
+  * debian/patches: added patch to install bootdata on usr/share correctly
+  * debian/patches: added patch to enable the -a for fsck (Tks: Adam Adam Cécile)
+  * debian/dirs: added entry for directory mentioned above
+  * debian/rules: added the file for wrapper HFS filesystem
+  * debian/README.Debian: give the URL of the Gentoo instructions
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Fri, 20 Jul 2007 09:37:02 -0300
