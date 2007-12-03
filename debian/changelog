@@ -1,3 +1,13 @@
+hfsprogs (332.14-2) unstable; urgency=low
+
+  * debian/control: restrict the number of architectures to i386 and powerpc,
+    since the package is not 64 bit clean (compiling on amd64 with option -m32
+    is under study for a future version of the package). See for reference bug
+    #436159 which originated the discussion and for which this is a workaround
+    to be addressed properly later.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Mon, 03 Dec 2007 20:06:00 -0200
+
 hfsprogs (332.14-1) unstable; urgency=low
 
   * Initial release (Closes: #433168)
