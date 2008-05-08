@@ -1,3 +1,12 @@
+hfsprogs (332.14-3) unstable; urgency=low
+
+  * debian/control: include more 32-bit architectures as requested
+    (Closes: #469151). Despite the fact that there is already a new
+    upstream version, I plan on having it be a team-managed package.
+  * Update to new Debian Policy Standard (no changes).
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Thu, 08 May 2008 17:26:15 -0300
+
 hfsprogs (332.14-2) unstable; urgency=low
 
   * debian/control: restrict the number of architectures to i386 and powerpc,
