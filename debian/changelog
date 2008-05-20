@@ -1,3 +1,20 @@
+hfsprogs (332.14-4) unstable; urgency=low
+
+  * debian/changelog: fix typo on Adam's name.
+  * debian/control: include "amd64" as a 64 bit target architecture.
+  * debian/control: include "hppa mips mipsel s390" 32 bit target
+    architectures (Closes: #482070).
+  * debian/control: include "m68k" as another architecture.
+    (Tks: Gerfried Fuchs)
+  * debian/rules: include detection of amd64 and pass information to build
+    process. Warning: the kernel needs to have support/emulation for 32 bit
+    applications enabled. (Tks: Adam Cécile)
+  * debian/rules: uses $(CURDIR) instead of $(PWD) as per lintian hint.
+  * debian/{lintian-override,rules}: create a lintian override for the
+    license (only the packaging is GPL, not the entire source code).
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Tue, 20 May 2008 18:57:18 -0300
+
 hfsprogs (332.14-3) unstable; urgency=low
 
   * debian/control: include more 32-bit architectures as requested
@@ -28,7 +45,7 @@ hfsprogs (332.14-1) unstable; urgency=low
   * debian/patches: incorporated patch from Gentoo to work with quilt
   * debian/patches: included patch to fix *roff warning
   * debian/patches: added patch to install bootdata on usr/share correctly
-  * debian/patches: added patch to enable the -a for fsck (Tks: Adam Adam Cécile)
+  * debian/patches: added patch to enable the -a for fsck (Tks: Adam Cécile)
   * debian/dirs: added entry for directory mentioned above
   * debian/rules: added the file for wrapper HFS filesystem
   * debian/README.Debian: give the URL of the Gentoo instructions

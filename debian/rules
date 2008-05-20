@@ -9,9 +9,7 @@ docdir=$(tmpdir)/usr/share/doc/$(pkgname)
 mansec=man8
 mandir=$(tmpdir)/usr/share/man/$(mansec)
 
-
 # CFLAGS
-
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -20,7 +18,17 @@ else
 	CFLAGS += -O2
 endif
 
-###
+# Suggestion from Adam Cecile <gandalf@le-vert.net>
+CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
+CFLAGSFSCK = $(CFLAGS)
+LDFLAGSFSCK = $(LDFLAGS)
+
+# For compiling on amd64
+DEB_HOST_ARCH	?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
+ifneq (,$(findstring amd64,$(DEB_HOST_ARCH)))
+	CFLAGSFSCK += -m32
+	LDFLAGSFSCK += -m32
+endif
 
 configure: configure-stamp
 configure-stamp:
@@ -37,7 +45,9 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	$(MAKE) -f Makefile.lnx
+	#$(MAKE) -f Makefile.lnx
+	cd newfs_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)"
+	cd fsck_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGSFSCK)" LDFLAGS="$(LDFLAGSFSCK)"
 
 	touch $@
 
@@ -81,6 +91,7 @@ binary-arch: build install
 	dh_installdocs
 	dh_installman
 	dh_link
+	cp debian/lintian-override $(tmpdir)/usr/share/lintian/overrides/$(pkgname)
 	dh_strip
 	dh_compress
 	dh_fixperms

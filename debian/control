@@ -2,11 +2,11 @@ Source: hfsprogs
 Section: otherosfs
 Priority: optional
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
-Build-Depends: debhelper (>= 5), quilt, libssl-dev
+Build-Depends: debhelper (>= 5), quilt, libssl-dev, libc6-dev-i386 [amd64], ia32-libs [amd64], gcc-multilib [amd64]
 Standards-Version: 3.7.3
 
 Package: hfsprogs
-Architecture: i386 powerpc sparc arm armel armeb kfreebsd-i386
+Architecture: i386 powerpc sparc arm armel armeb kfreebsd-i386 amd64 hppa mips mipsel s390 m68k
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: mkfs and fsck for HFS and HFS+ file systems
  The HFS+ file system used by Apple Computer for their Mac OS is
