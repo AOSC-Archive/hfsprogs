@@ -1,7 +1,7 @@
 Index: hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c
 ===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/fsck_hfs.c	2007-07-23 17:18:26.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c	2007-07-23 20:35:33.000000000 -0300
+--- hfsprogs-332.14.orig/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:08.000000000 -0300
++++ hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:18.000000000 -0300
 @@ -109,7 +109,7 @@
  	else
  		progname = *argv;

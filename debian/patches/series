@@ -1,4 +1,9 @@
-diskdev_cmds-332.14.patch
-typo-new_fs-manpage.diff
-hfs-wrapper-boot-in-usr-share.diff
-diskdev_cmds_system_check-332.14.patch
+00-create_makefiles.patch
+10-linux_specific_code.patch
+20-apple_specific_files.patch
+30-formatting_strings.patch
+40-printf_types.patch
+50-typo-new_fs-manpage.diff
+60-hfs-wrapper-boot-in-usr-share.diff
+70-diskdev_cmds_system_check-332.14.patch
+80-remove_see-also_from_manpage.patch

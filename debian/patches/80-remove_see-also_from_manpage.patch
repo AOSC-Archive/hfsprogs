@@ -1,0 +1,12 @@
+--- hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.8.orig	2008-10-07 05:46:44.000000000 -0300
++++ hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.8	2008-10-07 06:02:52.000000000 -0300
+@@ -139,8 +139,7 @@
+ Volume name (file system name) in ascii or UTF-8 format.
+ .El
+ .Sh SEE ALSO
+-.Xr mount 8 ,
+-.Xr pdisk 8
++.Xr mount 8
+ .Sh HISTORY
+ The
+ .Nm

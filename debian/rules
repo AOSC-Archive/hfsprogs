@@ -9,8 +9,12 @@ docdir=$(tmpdir)/usr/share/doc/$(pkgname)
 mansec=man8
 mandir=$(tmpdir)/usr/share/man/$(mansec)
 
+
+include /usr/share/quilt/quilt.make
+
+
 # CFLAGS
-CFLAGS = -Wall -g
+CFLAGS = -Wall -Wextra -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -31,12 +35,12 @@ ifneq (,$(findstring amd64,$(DEB_HOST_ARCH)))
 endif
 
 configure: configure-stamp
-configure-stamp:
+configure-stamp: $(QUILT_STAMPFN)
 	dh_testdir
 
 	# Add here commands to configure the package.
-	ln -sf debian/patches
-	quilt push -a || test $$? = 2
+	#ln -sf debian/patches
+	#quilt push -a || test $$? = 2
 
 	touch configure-stamp
 
@@ -51,21 +55,24 @@ build-stamp: configure-stamp
 
 	touch $@
 
-clean:
+clean: unpatch
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	ln -sf debian/patches
-	[ ! -f Makefile.lnx ] || $(MAKE) -f Makefile.lnx clean
-	quilt pop -a -R || test $$? = 2
+	#ln -sf debian/patches
+	#[ ! -f Makefile.lnx ] || $(MAKE) -f Makefile.lnx clean
+	#quilt pop -a -R || test $$? = 2
 
 	# remove quilt remains
-	rm -f   patches
-	rm -rf .pc
+	#rm -f   patches
+	#rm -rf .pc
 
 	# Add here commands to clean up after the build process.
-	dh_clean 
+	rm -rf newfs_hfs.tproj/*.o  newfs_hfs.tproj/newfs_hfs
+	rm -rf fsck_hfs.tproj/*.o   fsck_hfs.tproj/fsck_hfs
+	rm -rf fsck_hfs.tproj/dfalib/*.o fsck_hfs.tproj/dfalib/libdfa.a
+	dh_clean
 
 install: build
 	dh_testdir

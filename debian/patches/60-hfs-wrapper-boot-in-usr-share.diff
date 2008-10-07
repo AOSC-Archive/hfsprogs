@@ -1,7 +1,7 @@
 Index: hfsprogs-332.14/newfs_hfs.tproj/makehfs.c
 ===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/makehfs.c	2007-07-19 23:40:11.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/makehfs.c	2007-07-19 23:40:11.000000000 -0300
+--- hfsprogs-332.14.orig/newfs_hfs.tproj/makehfs.c	2008-10-07 05:08:08.000000000 -0300
++++ hfsprogs-332.14/newfs_hfs.tproj/makehfs.c	2008-10-07 05:08:17.000000000 -0300
 @@ -70,7 +70,7 @@
  #include "readme.h"
  

@@ -1,9 +1,11 @@
 Source: hfsprogs
 Section: otherosfs
 Priority: optional
+DM-Upload-Allowed: yes
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
+Homepage: http://www.opensource.apple.com/darwinsource/10.4/
 Build-Depends: debhelper (>= 5), quilt, libssl-dev, libc6-dev-i386 [amd64], ia32-libs [amd64], gcc-multilib [amd64]
-Standards-Version: 3.7.3
+Standards-Version: 3.8.0
 
 Package: hfsprogs
 Architecture: i386 powerpc sparc arm armel armeb kfreebsd-i386 amd64 hppa mips mipsel s390 m68k
@@ -24,7 +26,6 @@ Description: mkfs and fsck for HFS and HFS+ file systems
     good for those working with multimedia and that need to carry large
     ISO files);
   * ability to use case preserving (and even sensitivity!);
-  * ability to use a journaled filesystem;
   * ability to use uid's and gid's on the filesystem.
  .
  Users in general can enjoy such benefits since it is expected to have

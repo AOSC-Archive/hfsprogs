@@ -1,0 +1,70 @@
+Index: hfsprogs-332.14/Makefile.lnx
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ hfsprogs-332.14/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+@@ -0,0 +1,8 @@
++CC := gcc
++CFLAGS := -g3 -Wall -I$(PWD)/include -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1
++SUBDIRS := newfs_hfs.tproj fsck_hfs.tproj
++
++all clean:
++	for d in $(SUBDIRS); do $(MAKE) -C $$d -f Makefile.lnx $@; done
++
++export CC CFLAGS
+Index: hfsprogs-332.14/fsck_hfs.tproj/Makefile.lnx
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ hfsprogs-332.14/fsck_hfs.tproj/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+@@ -0,0 +1,15 @@
++CFILES = fsck_hfs.c strings.c utilities.c cache.c
++OFILES = $(CFILES:.c=.o)
++
++all: fsck_hfs
++
++fsck_hfs: $(OFILES) dfalib/libdfa.a
++
++dfalib/libdfa.a: FORCE
++	$(MAKE) -C dfalib -f Makefile.lnx libdfa.a
++
++clean:
++	$(RM) fsck_hfs $(OFILES)
++	$(MAKE) -C dfalib -f Makefile.lnx clean
++
++.PHONY : FORCE clean
+Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/Makefile.lnx
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+@@ -0,0 +1,15 @@
++CFILES = hfs_endian.c BlockCache.c\
++         BTree.c BTreeAllocate.c BTreeMiscOps.c \
++         BTreeNodeOps.c BTreeScanner.c BTreeTreeOps.c\
++         CatalogCheck.c HardLinkCheck.c\
++         SBTree.c SControl.c SVerify1.c SVerify2.c\
++         SRepair.c SRebuildCatalogBTree.c\
++         SUtils.c SKeyCompare.c SDevice.c SExtents.c SAllocate.c\
++         SCatalog.c SStubs.c VolumeBitmapCheck.c
++OFILES = $(CFILES:.c=.o)
++
++libdfa.a: $(OFILES)
++	ar rc $@ $?
++
++clean:
++	$(RM) $(OFILES) libdfa.a
+Index: hfsprogs-332.14/newfs_hfs.tproj/Makefile.lnx
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ hfsprogs-332.14/newfs_hfs.tproj/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+@@ -0,0 +1,12 @@
++CFILES = hfs_endian.c makehfs.c newfs_hfs.c
++OFILES = $(CFILES:.c=.o)
++
++all: newfs_hfs
++
++newfs_hfs: $(OFILES)
++	${CC} ${CFLAGS} -o newfs_hfs ${OFILES} -lssl
++
++clean:
++	$(RM) newfs_hfs $(OFILES)
++
++.PHONY : FORCE clean

@@ -1,3 +1,19 @@
+hfsprogs (332.14-5) unstable; urgency=low
+
+  * debian/patches: break-up the Gentoo patch into smaller patches.
+  * debian/patches: reorder the patches.
+  * debian/patches: refresh the patches.
+  * debian/patches: remove mention of pdisk (Closes: #482868) (LP: #234749).
+  * debian/control: include Homepage field.
+  * debian/control: update Standards-Version to 3.8.0. No changes required.
+  * debian/control: include DM-Upload-Allowed, as I am a DM now.
+  * debian/control: remove statement about using journals (LP: #164151).
+  * debian/rules: add -Wextra compilation flag.
+  * debian/rules: use quilt.make and remove home-brew solution.
+  * debian/watch: create watch file (lintian warning).
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Tue, 07 Oct 2008 05:08:48 -0300
+
 hfsprogs (332.14-4) unstable; urgency=low
 
   * debian/changelog: fix typo on Adam's name.
