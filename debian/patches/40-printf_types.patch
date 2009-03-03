@@ -1,7 +1,9 @@
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SControl.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SControl.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SControl.c	2008-10-07 05:08:14.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+  Try to address the issues of a given integral type having different sizes
+  in 32 and 64-bit architectures.
+--- a/fsck_hfs.tproj/dfalib/SControl.c
++++ b/fsck_hfs.tproj/dfalib/SControl.c
 @@ -739,7 +739,7 @@
  		pointer = (ScavStaticStructures *) AllocateClearMemory( sizeof(ScavStaticStructures) );
  		if ( pointer == nil ) {
@@ -11,10 +13,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SControl.c
  					R_NoMem, sizeof(ScavStaticStructures) );
  			}
  			return( R_NoMem );
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/hfs_endian.c	2008-10-07 05:08:08.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.c	2008-10-07 05:08:14.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/hfs_endian.c
++++ b/fsck_hfs.tproj/dfalib/hfs_endian.c
 @@ -563,7 +563,7 @@
              /* Make sure name length is consistent with key length */
              if (keyLength < sizeof(srcKey->parentID) + sizeof(srcKey->nodeName.length) +

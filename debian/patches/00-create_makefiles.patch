@@ -1,7 +1,10 @@
-Index: hfsprogs-332.14/Makefile.lnx
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+ Create short Makefiles for compiling just the necessary parts for a
+ Debian-based (and possibly other distributions) HFS+ filesystem
+ utilities.
+--- /dev/null
++++ b/Makefile.lnx
 @@ -0,0 +1,8 @@
 +CC := gcc
 +CFLAGS := -g3 -Wall -I$(PWD)/include -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1
@@ -11,10 +14,8 @@ Index: hfsprogs-332.14/Makefile.lnx
 +	for d in $(SUBDIRS); do $(MAKE) -C $$d -f Makefile.lnx $@; done
 +
 +export CC CFLAGS
-Index: hfsprogs-332.14/fsck_hfs.tproj/Makefile.lnx
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/fsck_hfs.tproj/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+--- /dev/null
++++ b/fsck_hfs.tproj/Makefile.lnx
 @@ -0,0 +1,15 @@
 +CFILES = fsck_hfs.c strings.c utilities.c cache.c
 +OFILES = $(CFILES:.c=.o)
@@ -31,10 +32,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/Makefile.lnx
 +	$(MAKE) -C dfalib -f Makefile.lnx clean
 +
 +.PHONY : FORCE clean
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/Makefile.lnx
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+--- /dev/null
++++ b/fsck_hfs.tproj/dfalib/Makefile.lnx
 @@ -0,0 +1,15 @@
 +CFILES = hfs_endian.c BlockCache.c\
 +         BTree.c BTreeAllocate.c BTreeMiscOps.c \
@@ -51,10 +50,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/Makefile.lnx
 +
 +clean:
 +	$(RM) $(OFILES) libdfa.a
-Index: hfsprogs-332.14/newfs_hfs.tproj/Makefile.lnx
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/newfs_hfs.tproj/Makefile.lnx	2008-10-07 05:08:06.000000000 -0300
+--- /dev/null
++++ b/newfs_hfs.tproj/Makefile.lnx
 @@ -0,0 +1,12 @@
 +CFILES = hfs_endian.c makehfs.c newfs_hfs.c
 +OFILES = $(CFILES:.c=.o)

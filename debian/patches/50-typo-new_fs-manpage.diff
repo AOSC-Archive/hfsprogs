@@ -1,7 +1,8 @@
-Index: hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.8
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/newfs_hfs.8	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.8	2008-10-07 05:08:16.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+  Eliminate warnings from man/troff.
+--- a/newfs_hfs.tproj/newfs_hfs.8
++++ b/newfs_hfs.tproj/newfs_hfs.8
 @@ -93,7 +93,7 @@
  option followed by a comma
  separated list of the form arg=blocks.

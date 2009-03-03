@@ -1,7 +1,9 @@
-Index: hfsprogs-332.14/fsck_hfs.tproj/cache.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/cache.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/cache.c	2008-10-07 05:08:08.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+  Modify some of the files so that they can be compiled without the
+  Apple owned frameworks in a Debian system (and possibly others).
+--- a/fsck_hfs.tproj/cache.c
++++ b/fsck_hfs.tproj/cache.c
 @@ -26,7 +26,11 @@
  #include <stdlib.h>
  #include <sys/mman.h>
@@ -14,10 +16,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/cache.c
  #include <sys/uio.h>
  #include <unistd.h>
  #include <string.h>
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTree.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/BTree.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTree.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/BTree.c
++++ b/fsck_hfs.tproj/dfalib/BTree.c
 @@ -1705,7 +1705,9 @@
  								 UInt16					 version,
  								 BTreeInfoRec			*info )
@@ -28,10 +28,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTree.c
  
  	BTreeControlBlockPtr	btreePtr;
  
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BlockCache.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/BlockCache.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/BlockCache.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/BlockCache.c
++++ b/fsck_hfs.tproj/dfalib/BlockCache.c
 @@ -20,6 +20,9 @@
   * @APPLE_LICENSE_HEADER_END@
   */
@@ -42,10 +40,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BlockCache.c
  #include "SRuntime.h"
  #include "Scavenger.h"
  #include "../cache.h"
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SBTree.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SBTree.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SBTree.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SBTree.c
++++ b/fsck_hfs.tproj/dfalib/SBTree.c
 @@ -301,7 +301,9 @@
  OSStatus
  SetEndOfForkProc ( SFCB *filePtr, FSSize minEOF, FSSize maxEOF )
@@ -56,10 +52,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SBTree.c
  
  	OSStatus	result;
  	UInt32		actualSectorsAdded;
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SDevice.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SDevice.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SDevice.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SDevice.c
++++ b/fsck_hfs.tproj/dfalib/SDevice.c
 @@ -2,7 +2,7 @@
   * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
   *
@@ -288,10 +282,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SDevice.c
  	*actBytes = 0;
  
  	seek_off = lseek(device, offset, SEEK_SET);
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SKeyCompare.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SKeyCompare.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SKeyCompare.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SKeyCompare.c
++++ b/fsck_hfs.tproj/dfalib/SKeyCompare.c
 @@ -454,7 +454,9 @@
   * The name portion of the key is compared using a 16-bit binary comparison. 
   * This is called from the b-tree code.
@@ -302,10 +294,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SKeyCompare.c
  SInt32
  CompareAttributeKeys(const AttributeKey *searchKey, const AttributeKey *trialKey)
  {
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRepair.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SRepair.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRepair.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SRepair.c
++++ b/fsck_hfs.tproj/dfalib/SRepair.c
 @@ -1593,7 +1593,9 @@
  
  static	OSErr	FixWrapperExtents( SGlobPtr GPtr, RepairOrderPtr p )
@@ -316,10 +306,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRepair.c
  
  	OSErr						err;
  	HFSMasterDirectoryBlock		*mdb;
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRuntime.h
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SRuntime.h	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRuntime.h	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SRuntime.h
++++ b/fsck_hfs.tproj/dfalib/SRuntime.h
 @@ -27,8 +27,11 @@
  #define __SRUNTIME__
  
@@ -346,10 +334,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SRuntime.h
  
  /* OS error codes */
  enum {
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SUtils.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SUtils.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SUtils.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SUtils.c
++++ b/fsck_hfs.tproj/dfalib/SUtils.c
 @@ -380,7 +380,8 @@
  //				GPtr->realVCB			Real in-memory vcb
  //------------------------------------------------------------------------------
@@ -369,10 +355,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SUtils.c
  
  
  /*-------------------------------------------------------------------------------
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SVerify2.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SVerify2.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SVerify2.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SVerify2.c
++++ b/fsck_hfs.tproj/dfalib/SVerify2.c
 @@ -32,7 +32,9 @@
  */
  
@@ -397,10 +381,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SVerify2.c
  	if ( isWriteable != 0 && 
  		 volumeHeader->catalogFile.clumpSize != vcb->vcbCatalogFile->fcbClumpSize ) {
  		PrintError(GPtr, E_InvalidClumpSize, 0);
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/Scavenger.h
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/Scavenger.h	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/Scavenger.h	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/Scavenger.h
++++ b/fsck_hfs.tproj/dfalib/Scavenger.h
 @@ -35,11 +35,16 @@
  #include "BTreeScanner.h"
  #include "hfs_endian.h"
@@ -428,10 +410,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/Scavenger.h
 +#endif
 +
  #endif /* __SCAVENGER__ */
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/hfs_endian.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/hfs_endian.c
++++ b/fsck_hfs.tproj/dfalib/hfs_endian.c
 @@ -31,7 +31,11 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -444,10 +424,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.c
  #include <hfs/hfs_format.h>
  
  #include "Scavenger.h"
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.h
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/hfs_endian.h	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.h	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/hfs_endian.h
++++ b/fsck_hfs.tproj/dfalib/hfs_endian.h
 @@ -27,9 +27,14 @@
   *
   * This file prototypes endian swapping routines for the HFS/HFS Plus
@@ -464,10 +442,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/hfs_endian.h
  #include "SRuntime.h"
  
  /*********************/
-Index: hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/fsck_hfs.c
++++ b/fsck_hfs.tproj/fsck_hfs.c
 @@ -2,7 +2,7 @@
   * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
   *
@@ -812,10 +788,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c
 +
  	exit(1);
  }
-Index: hfsprogs-332.14/fsck_hfs.tproj/utilities.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/utilities.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/utilities.c	2008-10-07 05:08:08.000000000 -0300
+--- a/fsck_hfs.tproj/utilities.c
++++ b/fsck_hfs.tproj/utilities.c
 @@ -183,12 +183,14 @@
  			printf("Can't stat %s\n", raw);
  			return (origname);
@@ -844,10 +818,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/utilities.c
  	(void)strcat(rawbuf, &dp[1]);
  
  	return (rawbuf);
-Index: hfsprogs-332.14/include/missing.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/include/missing.h	2008-10-07 05:08:08.000000000 -0300
+--- /dev/null
++++ b/include/missing.h
 @@ -0,0 +1,113 @@
 +#ifndef _MISSING_H_
 +#define _MISSING_H_
@@ -962,10 +934,8 @@ Index: hfsprogs-332.14/include/missing.h
 +#define KAUTH_FILESEC_XATTR "com.apple.system.Security"
 +
 +#endif
-Index: hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.c
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/hfs_endian.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.c	2008-10-07 05:08:08.000000000 -0300
+--- a/newfs_hfs.tproj/hfs_endian.c
++++ b/newfs_hfs.tproj/hfs_endian.c
 @@ -30,7 +30,12 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -979,10 +949,8 @@ Index: hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.c
  #include <hfs/hfs_format.h>
  
  #include "hfs_endian.h"
-Index: hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.h
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/hfs_endian.h	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.h	2008-10-07 05:08:08.000000000 -0300
+--- a/newfs_hfs.tproj/hfs_endian.h
++++ b/newfs_hfs.tproj/hfs_endian.h
 @@ -29,7 +29,12 @@
   * volume format.
   */
@@ -996,10 +964,8 @@ Index: hfsprogs-332.14/newfs_hfs.tproj/hfs_endian.h
  
  /*********************/
  /* BIG ENDIAN Macros */
-Index: hfsprogs-332.14/newfs_hfs.tproj/makehfs.c
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/makehfs.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/makehfs.c	2008-10-07 05:08:08.000000000 -0300
+--- a/newfs_hfs.tproj/makehfs.c
++++ b/newfs_hfs.tproj/makehfs.c
 @@ -31,10 +31,16 @@
  #include <sys/param.h>
  #include <sys/types.h>
@@ -1251,10 +1217,8 @@ Index: hfsprogs-332.14/newfs_hfs.tproj/makehfs.c
  		/* The current GMT (26 ASCII characters): */
  		time(&now);
  		strncpy(randomInputBuffer, asctime(gmtime(&now)), 26);	/* "Mon Mar 27 13:46:26 2000" */
-Index: hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.c
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/newfs_hfs.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.c	2008-10-07 05:08:08.000000000 -0300
+--- a/newfs_hfs.tproj/newfs_hfs.c
++++ b/newfs_hfs.tproj/newfs_hfs.c
 @@ -38,8 +38,13 @@
  #include <sys/mount.h>
  #include <sys/param.h>
@@ -1501,10 +1465,8 @@ Index: hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.c
  	}
  }
  
-Index: hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.h
-===================================================================
---- hfsprogs-332.14.orig/newfs_hfs.tproj/newfs_hfs.h	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/newfs_hfs.tproj/newfs_hfs.h	2008-10-07 05:08:08.000000000 -0300
+--- a/newfs_hfs.tproj/newfs_hfs.h
++++ b/newfs_hfs.tproj/newfs_hfs.h
 @@ -19,8 +19,12 @@
   * 
   * @APPLE_LICENSE_HEADER_END@

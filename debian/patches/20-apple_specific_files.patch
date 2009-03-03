@@ -1,7 +1,9 @@
-Index: hfsprogs-332.14/include/bitstring.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/include/bitstring.h	2008-10-07 05:08:10.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+  Add some include files from an Apple system that contain the definition of
+  the data structures used by the programs that manipulate the filesystems.
+--- /dev/null
++++ b/include/bitstring.h
 @@ -0,0 +1,164 @@
 +/*
 + * Copyright (c) 2000 Apple Computer, Inc. All rights reserved.
@@ -167,10 +169,8 @@ Index: hfsprogs-332.14/include/bitstring.h
 +}
 +
 +#endif /* !_BITSTRING_H_ */
-Index: hfsprogs-332.14/include/hfs/hfs_format.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/include/hfs/hfs_format.h	2008-10-07 05:08:10.000000000 -0300
+--- /dev/null
++++ b/include/hfs/hfs_format.h
 @@ -0,0 +1,689 @@
 +/*
 + * Copyright (c) 2000-2004 Apple Computer, Inc. All rights reserved.
@@ -861,10 +861,8 @@ Index: hfsprogs-332.14/include/hfs/hfs_format.h
 +#endif
 +
 +#endif /* __HFS_FORMAT__ */
-Index: hfsprogs-332.14/include/hfs/hfs_mount.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/include/hfs/hfs_mount.h	2008-10-07 05:08:10.000000000 -0300
+--- /dev/null
++++ b/include/hfs/hfs_mount.h
 @@ -0,0 +1,78 @@
 +/*
 + * Copyright (c) 2000-2003 Apple Computer, Inc. All rights reserved.
@@ -944,10 +942,8 @@ Index: hfsprogs-332.14/include/hfs/hfs_mount.h
 +#endif /* __APPLE_API_UNSTABLE */
 +
 +#endif /* ! _HFS_MOUNT_H_ */
-Index: hfsprogs-332.14/include/sys/appleapiopts.h
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ hfsprogs-332.14/include/sys/appleapiopts.h	2008-10-07 05:08:10.000000000 -0300
+--- /dev/null
++++ b/include/sys/appleapiopts.h
 @@ -0,0 +1,56 @@
 +/*
 + * Copyright (c) 2002 Apple Computer, Inc. All rights reserved.

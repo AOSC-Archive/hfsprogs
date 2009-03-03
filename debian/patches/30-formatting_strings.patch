@@ -1,7 +1,9 @@
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/BTreeTreeOps.c	2008-10-07 05:08:02.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTreeTreeOps.c	2008-10-07 05:08:12.000000000 -0300
+Author: Rog√©rio Brito <rbrito@ime.usp.br>
+Description:
+  Modify the way that debug messages are sent to the user, by eliminating one
+  character of them.
+--- a/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
++++ b/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
 @@ -223,7 +223,7 @@
          //
          if (curNodeNum == 0)
@@ -211,10 +213,8 @@ Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
  			err = fsBTBadRotateErr;
  			goto ErrorExit;
  		}
-Index: hfsprogs-332.14/fsck_hfs.tproj/dfalib/SBTree.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/dfalib/SBTree.c	2008-10-07 05:08:08.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/dfalib/SBTree.c	2008-10-07 05:08:12.000000000 -0300
+--- a/fsck_hfs.tproj/dfalib/SBTree.c
++++ b/fsck_hfs.tproj/dfalib/SBTree.c
 @@ -93,7 +93,7 @@
  			CopyMemory(&resultIterator->key, foundKey, CalcKeySize(btcb, &resultIterator->key));	//•• warning, this could overflow user's buffer!!!
  

@@ -1,7 +1,9 @@
-Index: hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c
-===================================================================
---- hfsprogs-332.14.orig/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:08.000000000 -0300
-+++ hfsprogs-332.14/fsck_hfs.tproj/fsck_hfs.c	2008-10-07 05:08:18.000000000 -0300
+Author: Rogério Brito <rbrito@ime.usp.br>
+Description:
+  Create a new command line option (-a) for the fsck.hfsplus that has the same
+  behavior that the -p option has, for greater compatibility with other tools.
+--- a/fsck_hfs.tproj/fsck_hfs.c
++++ b/fsck_hfs.tproj/fsck_hfs.c
 @@ -109,7 +109,7 @@
  	else
  		progname = *argv;
