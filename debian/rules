@@ -1,7 +1,8 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-# Auxiliary variables
+############################################################
+# Initial setup
 pkgname=hfsprogs
 tmpdir=debian/$(pkgname)
 shrdir=$(tmpdir)/usr/share/$(pkgname)
@@ -9,11 +10,8 @@ docdir=$(tmpdir)/usr/share/doc/$(pkgname)
 mansec=man8
 mandir=$(tmpdir)/usr/share/man/$(mansec)
 
-
 include /usr/share/quilt/quilt.make
 
-
-# CFLAGS
 CFLAGS = -Wall -Wextra -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -22,25 +20,24 @@ else
 	CFLAGS += -O2
 endif
 
-# Suggestion from Adam Cecile <gandalf@le-vert.net>
 CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
 CFLAGSFSCK = $(CFLAGS)
 LDFLAGSFSCK = $(LDFLAGS)
 
-# For compiling on amd64
+# This deals with both kfreebsd-amd64 and amd64,
+# as it matches only a substring.
 DEB_HOST_ARCH	?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 ifneq (,$(findstring amd64,$(DEB_HOST_ARCH)))
 	CFLAGSFSCK += -m32
 	LDFLAGSFSCK += -m32
 endif
 
+############################################################
+# The targets
+
 configure: configure-stamp
 configure-stamp: $(QUILT_STAMPFN)
 	dh_testdir
-
-	# Add here commands to configure the package.
-	#ln -sf debian/patches
-	#quilt push -a || test $$? = 2
 
 	touch configure-stamp
 
@@ -49,7 +46,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	#$(MAKE) -f Makefile.lnx
 	cd newfs_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)"
 	cd fsck_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGSFSCK)" LDFLAGS="$(LDFLAGSFSCK)"
 
@@ -60,15 +56,6 @@ clean: unpatch
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	#ln -sf debian/patches
-	#[ ! -f Makefile.lnx ] || $(MAKE) -f Makefile.lnx clean
-	#quilt pop -a -R || test $$? = 2
-
-	# remove quilt remains
-	#rm -f   patches
-	#rm -rf .pc
-
-	# Add here commands to clean up after the build process.
 	rm -rf newfs_hfs.tproj/*.o  newfs_hfs.tproj/newfs_hfs
 	rm -rf fsck_hfs.tproj/*.o   fsck_hfs.tproj/fsck_hfs
 	rm -rf fsck_hfs.tproj/dfalib/*.o fsck_hfs.tproj/dfalib/libdfa.a
@@ -80,7 +67,6 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/hfsprogs.
 	install -m 644 newfs_hfs.tproj/hfsbootdata.img $(shrdir)/hfsbootdata
 	install -m 755 newfs_hfs.tproj/newfs_hfs   $(tmpdir)/sbin/mkfs.hfsplus
 	install -m 755 fsck_hfs.tproj/fsck_hfs     $(tmpdir)/sbin/fsck.hfsplus
@@ -98,7 +84,6 @@ binary-arch: build install
 	dh_installdocs
 	dh_installman
 	dh_link
-	cp debian/lintian-override $(tmpdir)/usr/share/lintian/overrides/$(pkgname)
 	dh_strip
 	dh_compress
 	dh_fixperms

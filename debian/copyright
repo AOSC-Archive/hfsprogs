@@ -383,5 +383,8 @@ License:
     Please see the License for the specific language governing rights and
     limitations under the License."
 
-The Debian packaging is (C) 2007, Rogério Brito <rbrito@users.sf.net> and
-is licensed under the GPL, see `/usr/share/common-licenses/GPL'.
+The Debian packaging is
+
+    Copyright 2007,2009, Rogério Brito <rbrito@ime.usp.br>
+
+and is licensed under the APSL 2.0 (described above).

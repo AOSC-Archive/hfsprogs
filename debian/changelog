@@ -1,3 +1,21 @@
+hfsprogs (332.14-7) unstable; urgency=low
+
+  * debian/control:
+    + try to support for multiarch. Tks Petr Salinger. (Closes: #537378)
+    + include support for kfreebsd-amd64.
+    + upgrade to Standards version 3.8.2. No changes needed.
+  * debian/copyright:
+    + update my copyright.
+  * debian/{dirs,lintian.override,rules}:
+    + remove unused parts and installation.
+  * debian/rules:
+    + remove commented lines.
+    + clean up a little.
+    + document the compilation of kfreebsd-amd64 and amd64 with 32 bit
+      instructions.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sun, 02 Aug 2009 13:28:14 -0300
+
 hfsprogs (332.14-6) unstable; urgency=low
 
   * debian/patches/*: include description (lintian).
