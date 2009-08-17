@@ -215,7 +215,7 @@ Description:
  		}
 --- a/fsck_hfs.tproj/dfalib/SBTree.c
 +++ b/fsck_hfs.tproj/dfalib/SBTree.c
-@@ -93,7 +93,7 @@
+@@ -103,7 +103,7 @@
  			CopyMemory(&resultIterator->key, foundKey, CalcKeySize(btcb, &resultIterator->key));	//¥¥ warning, this could overflow user's buffer!!!
  
  		if ( DEBUG_BUILD && !ValidHFSRecord(data, btcb, *dataSize) )
@@ -224,7 +224,7 @@ Description:
  	}
  
  ErrorExit:
-@@ -190,7 +190,7 @@
+@@ -211,7 +211,7 @@
  		CopyMemory(&iterator->key, key, CalcKeySize(btcb, &iterator->key));	//¥¥ warning, this could overflow user's buffer!!!
  		
  		if ( DEBUG_BUILD && !ValidHFSRecord(data, btcb, *dataSize) )
@@ -233,7 +233,7 @@ Description:
  
  	}
  	
-@@ -222,7 +222,7 @@
+@@ -243,7 +243,7 @@
  	CopyMemory(key, &iterator.key, CalcKeySize(btcb, (BTreeKey *) key));	//¥¥ should we range check against maxkeylen?
  
  	if ( DEBUG_BUILD && !ValidHFSRecord(data, btcb, dataSize) )
@@ -242,7 +242,7 @@ Description:
  
  	result = BTInsertRecord( fcb, &iterator, &btRecord, dataSize );
  
-@@ -284,7 +284,7 @@
+@@ -305,7 +305,7 @@
  	CopyMemory(key, &iterator.key, CalcKeySize(btcb, (BTreeKey *) key));		//¥¥ should we range check against maxkeylen?
  
  	if ( DEBUG_BUILD && !ValidHFSRecord(newData, btcb, dataSize) )
@@ -251,7 +251,7 @@ Description:
  
  	result = BTReplaceRecord( fcb, &iterator, &btRecord, dataSize );
  
-@@ -323,7 +323,7 @@
+@@ -344,7 +344,7 @@
  	else
  	{
  		if ( DEBUG_BUILD )
@@ -260,7 +260,7 @@ Description:
  		return -1;
  	}
  
-@@ -349,7 +349,7 @@
+@@ -370,7 +370,7 @@
  	//	Make sure we got at least as much space as we needed
  	//
  	if (filePtr->fcbLogicalSize < minEOF) {
@@ -269,7 +269,7 @@ Description:
  		return dskFulErr;
  	}
  	
-@@ -421,7 +421,7 @@
+@@ -442,7 +442,7 @@
  	if ( (keyLen < 6) || (keyLen > btcb->maxKeyLength) )
  	{
  		if ( DEBUG_BUILD )

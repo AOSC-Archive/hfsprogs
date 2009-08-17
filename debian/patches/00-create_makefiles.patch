@@ -17,7 +17,7 @@ Description:
 --- /dev/null
 +++ b/fsck_hfs.tproj/Makefile.lnx
 @@ -0,0 +1,15 @@
-+CFILES = fsck_hfs.c strings.c utilities.c cache.c
++CFILES = fsck_hfs.c strings.c utilities.c cache.c fsck_debug.c
 +OFILES = $(CFILES:.c=.o)
 +
 +all: fsck_hfs

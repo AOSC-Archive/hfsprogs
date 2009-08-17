@@ -1,11 +1,23 @@
-hfsprogs (332.14-8) unstable; urgency=low
+hfsprogs (332.18-1) experimental; urgency=low
 
-  * fix spelling in manpages, thanks to A. Costa. (Closes: #547425).
-  * include a README.source file as per policy.
-  * include a watch file to track upstream versions.
-  * upgrade Standards-Version 3.8.3. No changes needed.
+  * New upstream version.
+    (still catching up with Apple, but we'll get closer now).
+  * debian/control:
+    + include avr32 as an allowed arch.
+  * debian/patches:
+    + 00-create_makefiles: add a file for fsck.hfsplus.
+    + 10-linux_specific_code: remove an #undefine to allow compilation.
+    + 90-workaround_strlcpy: s/strlcpy/strncpy/ (yes, it's dangerous).
+    + readapt the patches *a* *lot* (what a headache!).
+    + refresh the patches.
+  * debian/rules:
+    + disabled warnings for a little while.
+  * debian/watch:
+    + include a new one (caution: Apple may change their site layout).
+  * debian/README.source:
+    + include, as we are using quilt.
 
- -- Rogério Brito <rbrito@ime.usp.br>  Sun, 25 Oct 2009 10:01:03 -0200
+ -- Rogério Brito <rbrito@ime.usp.br>  Mon, 17 Aug 2009 15:23:01 -0300
 
 hfsprogs (332.14-7) unstable; urgency=low
 

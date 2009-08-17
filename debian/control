@@ -5,10 +5,10 @@ DM-Upload-Allowed: yes
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Homepage: http://www.opensource.apple.com/darwinsource/10.4/
 Build-Depends: debhelper (>= 5), quilt, libssl-dev, gcc-multilib [amd64 kfreebsd-amd64]
-Standards-Version: 3.8.3
+Standards-Version: 3.8.2
 
 Package: hfsprogs
-Architecture: i386 powerpc sparc arm armel armeb kfreebsd-i386 amd64 kfreebsd-amd64 hppa mips mipsel s390 m68k
+Architecture: i386 powerpc sparc arm armel armeb kfreebsd-i386 amd64 kfreebsd-amd64 hppa mips mipsel s390 m68k avr32
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: mkfs and fsck for HFS and HFS+ file systems
  The HFS+ file system used by Apple Computer for their Mac OS is

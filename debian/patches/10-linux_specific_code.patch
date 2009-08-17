@@ -42,7 +42,7 @@ Description:
  #include "../cache.h"
 --- a/fsck_hfs.tproj/dfalib/SBTree.c
 +++ b/fsck_hfs.tproj/dfalib/SBTree.c
-@@ -301,7 +301,9 @@
+@@ -322,7 +322,9 @@
  OSStatus
  SetEndOfForkProc ( SFCB *filePtr, FSSize minEOF, FSSize maxEOF )
  {
@@ -296,7 +296,7 @@ Description:
  {
 --- a/fsck_hfs.tproj/dfalib/SRepair.c
 +++ b/fsck_hfs.tproj/dfalib/SRepair.c
-@@ -1593,7 +1593,9 @@
+@@ -1617,7 +1617,9 @@
  
  static	OSErr	FixWrapperExtents( SGlobPtr GPtr, RepairOrderPtr p )
  {
@@ -367,7 +367,7 @@ Description:
  
  #include "BTree.h"
  #include "BTreePrivate.h"
-@@ -1240,8 +1242,13 @@
+@@ -1354,8 +1356,13 @@
  	 * clump size for read-only media is irrelevant we skip the clump size 
  	 * check to avoid non useful warnings. 
  	 */
@@ -383,10 +383,10 @@ Description:
  		PrintError(GPtr, E_InvalidClumpSize, 0);
 --- a/fsck_hfs.tproj/dfalib/Scavenger.h
 +++ b/fsck_hfs.tproj/dfalib/Scavenger.h
-@@ -35,11 +35,16 @@
- #include "BTreeScanner.h"
- #include "hfs_endian.h"
+@@ -37,11 +37,16 @@
+ #include "../fsck_debug.h"
  
+ #include <assert.h>
 +#if LINUX
 +#define XATTR_MAXNAMELEN 127
 +#include <limits.h>
@@ -401,13 +401,13 @@ Description:
  
  #ifdef __cplusplus
  extern	"C" {
-@@ -1434,4 +1439,8 @@
+@@ -1465,4 +1470,8 @@
  };
  #endif
  
-+#if LINUX
++/* #if LINUX
 +#undef XATTR_MAXNAMELEN
-+#endif
++#endif */
 +
  #endif /* __SCAVENGER__ */
 --- a/fsck_hfs.tproj/dfalib/hfs_endian.c
@@ -444,32 +444,7 @@ Description:
  /*********************/
 --- a/fsck_hfs.tproj/fsck_hfs.c
 +++ b/fsck_hfs.tproj/fsck_hfs.c
-@@ -2,7 +2,7 @@
-  * Copyright (c) 1999 Apple Computer, Inc. All rights reserved.
-  *
-  * @APPLE_LICENSE_HEADER_START@
-- * 
-+ *
-  * "Portions Copyright (c) 1999 Apple Computer, Inc.  All Rights
-  * Reserved.  This file contains Original Code and/or Modifications of
-  * Original Code as defined in and that are subject to the Apple Public
-@@ -10,7 +10,7 @@
-  * except in compliance with the License.  Please obtain a copy of the
-  * License at http://www.apple.com/publicsource and read it before using
-  * this file.
-- * 
-+ *
-  * The Original Code and all software distributed under the License are
-  * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
-  * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
-@@ -18,16 +18,20 @@
-  * FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT.  Please see the
-  * License for the specific language governing rights and limitations
-  * under the License."
-- * 
-+ *
-  * @APPLE_LICENSE_HEADER_END@
-  */
+@@ -24,10 +24,14 @@
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <sys/param.h>
@@ -484,44 +459,20 @@ Description:
  
  #include <hfs/hfs_mount.h>
  
-@@ -125,7 +129,7 @@
- 			yflag = 0;
- 			force++;
- 			break;
--			
-+
- 		case 'm':
- 			modeSetting++;
- 			lostAndFoundMode = strtol( optarg, NULL, 8 );
-@@ -135,7 +139,7 @@
- 				usage();
- 			}
- 			break;
--			
-+
- 		case 'n':
- 			nflag++;
- 			yflag = 0;
-@@ -167,13 +171,15 @@
- 
- 	argc -= optind;
- 	argv += optind;
--	
-+
+@@ -195,8 +199,12 @@
  	if (guiControl)
  		debug = 0; /* debugging is for command line only */
--
+ 
 +#if LINUX
 +// FIXME
 +#else
  	if (signal(SIGINT, SIG_IGN) != SIG_IGN)
  		(void)signal(SIGINT, catch);
--
 +#endif
+ 
  	if (argc < 1) {
  		(void) fprintf(stderr, "%s: missing special-device\n", progname);
- 		usage();
-@@ -194,7 +200,9 @@
+@@ -218,7 +226,9 @@
  	int chkLev, repLev, logLev;
  	int blockDevice_fd, canWrite;
  	char *unraw, *mntonname;
@@ -531,7 +482,7 @@ Description:
  	int fs_fd=-1;  // fd to the root-dir of the fs we're checking (only w/lfag == 1)
  
  	flags = 0;
-@@ -203,7 +211,9 @@
+@@ -227,7 +237,9 @@
  	canWrite = 0;
  	unraw = NULL;
  	mntonname = NULL;
@@ -542,7 +493,7 @@ Description:
  	if (lflag) {
  		result = getmntinfo(&fsinfo, MNT_NOWAIT);
  
-@@ -233,10 +243,10 @@
+@@ -257,10 +269,10 @@
  		    }
  		}
  	}
@@ -555,7 +506,7 @@ Description:
  	if (setup( filesys, &blockDevice_fd, &canWrite ) == 0) {
  		if (preen)
  			pfatal("CAN'T CHECK FILE SYSTEM.");
-@@ -254,7 +264,7 @@
+@@ -278,7 +290,7 @@
  	repLev = kMajorRepairs;
  	logLev = kVerboseLog;
  
@@ -564,7 +515,7 @@ Description:
  		repLev = kMajorRepairs;
  
  	if (quick) {
-@@ -274,16 +284,16 @@
+@@ -298,16 +310,16 @@
  
  	if (nflag)
  		repLev = kNeverRepair;
@@ -584,7 +535,7 @@ Description:
  						guiControl, lostAndFoundMode, canWrite, &fsmodified );
  	if (!hotroot) {
  		ckfini(1);
-@@ -306,6 +316,9 @@
+@@ -330,6 +342,9 @@
  			}
  		}
  	} else {
@@ -594,7 +545,7 @@ Description:
  		struct statfs stfs_buf;
  		/*
  		 * Check to see if root is mounted read-write.
-@@ -315,19 +328,25 @@
+@@ -339,19 +354,25 @@
  		else
  			flags = 0;
  		ckfini(flags & MNT_RDONLY);
@@ -621,7 +572,7 @@ Description:
  			bzero(&args, sizeof(args));
  			flags |= MNT_UPDATE | MNT_RELOAD;
  			if (mount("hfs", "/", flags, &args) == 0) {
-@@ -335,6 +354,7 @@
+@@ -359,6 +380,7 @@
  				goto ExitThisRoutine;
  			}
  		}
@@ -629,7 +580,7 @@ Description:
  		if (!preen)
  			printf("\n***** REBOOT NOW *****\n");
  		sync();
-@@ -343,7 +363,7 @@
+@@ -367,7 +389,7 @@
  	}
  
  	result = (result == 0) ? 0 : EEXIT;
@@ -638,7 +589,7 @@ Description:
  ExitThisRoutine:
  	if (lflag) {
  	    fcntl(fs_fd, F_THAW_FS, NULL);
-@@ -375,16 +395,18 @@
+@@ -401,16 +423,18 @@
  	fswritefd = -1;
  	*blockDevice_fdPtr = -1;
  	*canWritePtr = 0;
@@ -658,7 +609,7 @@ Description:
  	if ((fsreadfd = open(dev, O_RDONLY)) < 0) {
  		printf("Can't open %s: %s\n", dev, strerror(errno));
  		return (0);
-@@ -393,7 +415,7 @@
+@@ -419,7 +443,7 @@
  	/* attempt to get write access to the block device and if not check if volume is */
  	/* mounted read-only.  */
  	getWriteAccess( dev, blockDevice_fdPtr, canWritePtr );
@@ -667,7 +618,7 @@ Description:
  	if (preen == 0 && !guiControl)
  		printf("** %s", dev);
  	if (nflag || (fswritefd = open(dev, O_WRONLY)) < 0) {
-@@ -407,42 +429,50 @@
+@@ -433,10 +457,14 @@
  		printf("\n");
  
  	/* Get device block size to initialize cache */
@@ -679,26 +630,10 @@ Description:
  		return (0);
  	}
 +#endif
- 	/* Initialize the cache */
- 	if (CacheInit (&fscache, fsreadfd, fswritefd, devBlockSize,
- 			CACHE_IOSIZE, CACHE_BLOCKS, CACHE_HASHSIZE) != EOK) {
- 		pfatal("Can't initialize disk cache\n");
- 		return (0);
--	}	
-+	}
  
- 	return (1);
- }
- 
- 
--// This routine will attempt to open the block device with write access for the target 
-+// This routine will attempt to open the block device with write access for the target
- // volume in order to block others from mounting the volume with write access while we
- // check / repair it.  If we cannot get write access then we check to see if the volume
--// has been mounted read-only.  If it is read-only then we should be OK to write to 
-+// has been mounted read-only.  If it is read-only then we should be OK to write to
- // the raw device.  Note that this does not protect use from someone upgrading the mount
- // from read-only to read-write.
+ 	 /* calculate the cache block size and total blocks */
+ 	if (CalculateCacheSize(userCacheSize, &cacheBlockSize, &cacheTotalBlocks, debug) != 0) {
+@@ -463,11 +491,15 @@
  
  static void getWriteAccess( char *dev, int *blockDevice_fdPtr, int *canWritePtr )
  {
@@ -714,50 +649,17 @@ Description:
  	void *				myNamePtr;
  
  	myPtr = NULL;
- 	myNamePtr = malloc( strlen(dev) + 2 );
--	if ( myNamePtr == NULL ) 
-+	if ( myNamePtr == NULL )
- 		return;
--		
-+
- 	strcpy( (char *)myNamePtr, dev );
- 	if ( (myCharPtr = strrchr( (char *)myNamePtr, '/' )) != 0 ) {
- 		if ( myCharPtr[1] == 'r' ) {
-@@ -450,24 +480,25 @@
- 			*blockDevice_fdPtr = open( (char *)myNamePtr, O_WRONLY );
- 		}
+@@ -490,6 +522,9 @@
  	}
--	
-+
- 	if ( *blockDevice_fdPtr > 0 ) {
- 		// we got write access to the block device so we can safely write to raw device
- 		*canWritePtr = 1;
- 		goto ExitThisRoutine;
- 	}
--	
--	// get count of mounts then get the info for each 
-+	// get count of mounts then get the info for each
+ 	
+ 	// get count of mounts then get the info for each 
 +#if LINUX
 +	// FIXME
 +#else
  	myMountsCount = getfsstat( NULL, 0, MNT_NOWAIT );
  	if ( myMountsCount < 0 )
  		goto ExitThisRoutine;
--
- 	myPtr = (void *) malloc( sizeof(struct statfs) * myMountsCount );
--	if ( myPtr == NULL ) 
-+	if ( myPtr == NULL )
- 		goto ExitThisRoutine;
--	myMountsCount = getfsstat( 	myPtr, 
--								(sizeof(struct statfs) * myMountsCount), 
--								MNT_NOWAIT );
-+	myMountsCount = getfsstat( 	myPtr,
-+							(sizeof(struct statfs) * myMountsCount),
-+							MNT_NOWAIT );
- 	if ( myMountsCount < 0 )
- 		goto ExitThisRoutine;
- 
-@@ -481,17 +512,17 @@
+@@ -513,8 +548,8 @@
  		}
  		myBufPtr++;
  	}
@@ -768,26 +670,6 @@ Description:
  ExitThisRoutine:
  	if ( myPtr != NULL )
  		free( myPtr );
--		
-+
- 	if ( myNamePtr != NULL )
- 		free( myNamePtr );
--	
-+
- 	return;
--	
-+
- } /* getWriteAccess */
- 
- 
-@@ -509,6 +540,6 @@
- 	(void) fprintf(stderr, "  r = rebuild catalog btree \n");
- 	(void) fprintf(stderr, "  u = usage \n");
- 	(void) fprintf(stderr, "  y = assume a yes response \n");
--	
-+
- 	exit(1);
- }
 --- a/fsck_hfs.tproj/utilities.c
 +++ b/fsck_hfs.tproj/utilities.c
 @@ -183,12 +183,14 @@
@@ -820,7 +702,7 @@ Description:
  	return (rawbuf);
 --- /dev/null
 +++ b/include/missing.h
-@@ -0,0 +1,113 @@
+@@ -0,0 +1,119 @@
 +#ifndef _MISSING_H_
 +#define _MISSING_H_
 +
@@ -828,6 +710,7 @@ Description:
 +#include <byteswap.h>
 +#include <errno.h>
 +#include <stdint.h>
++#include <string.h>
 +
 +#define MAXBSIZE		(256 * 4096)
 +
@@ -929,6 +812,11 @@ Description:
 +#ifndef cpu_to_be64
 +#define cpu_to_be64(x) 	(x)
 +#endif
++#endif
++
++/* dirty workaround for BSD's strlcpy (missing from glibc) */
++#ifndef strlcpy
++#define strlcpy(t, s, size) { strncpy(t, s, (size)-1); t[(size)-1] = '\0'; }
 +#endif
 +
 +#define KAUTH_FILESEC_XATTR "com.apple.system.Security"
@@ -1243,7 +1131,7 @@ Description:
  char	blkdevice[MAXPATHLEN];
  UInt32	gBlockSize = 0;
  UInt32	gNextCNID = kHFSFirstUserCatalogNodeID;
-@@ -137,8 +144,10 @@
+@@ -158,8 +165,10 @@
  	extern int optind;
  	int ch;
  	int forceHFS;
@@ -1254,40 +1142,58 @@ Description:
  	int n;
  	
  	if ((progname = strrchr(*argv, '/')))
-@@ -238,7 +247,9 @@
+@@ -260,16 +269,19 @@
+ 			usage();
+ 		}
  
- 	if (argc != 1)
- 		usage();
--
+-	argc -= optind;
+-	argv += optind;
++		argc -= optind;
++		argv += optind;
+ 
+-	if (gPartitionSize != 0) {
+-		if (argc != 0)
+-			usage();
+-	} else {
+-		if (argc != 1)
+-			usage();
++		if (gPartitionSize != 0) {
++			if (argc != 0)
++				usage();
++		} else {
++			if (argc != 1)
++				usage();
+ 
 +#if LINUX
-+	(void) sprintf(blkdevice, "%s", argv[0]);
++		(void) sprintf(blkdevice, "%s", argv[0]);
 +#else
- 	special = argv[0];
- 	cp = strrchr(special, '/');
- 	if (cp != 0)
-@@ -247,6 +258,7 @@
- 		special++;
- 	(void) sprintf(rawdevice, "%sr%s", _PATH_DEV, special);
- 	(void) sprintf(blkdevice, "%s%s", _PATH_DEV, special);
+ 		special = argv[0];
+ 		cp = strrchr(special, '/');
+ 		if (cp != 0)
+@@ -278,6 +290,7 @@
+ 			special++;
+ 		(void) sprintf(rawdevice, "%sr%s", _PATH_DEV, special);
+ 		(void) sprintf(blkdevice, "%s%s", _PATH_DEV, special);
 +#endif
+ 	}
  
  	if (forceHFS && gJournaled) {
- 		fprintf(stderr, "-h -J: incompatible options specified\n");
-@@ -268,6 +280,9 @@
- 	/*
- 	 * Check if target device is aready mounted
- 	 */
+@@ -301,6 +314,9 @@
+ 		/*
+ 		 * Check if target device is aready mounted
+ 		 */
 +#if LINUX
 +	// FIXME
 +#else
- 	n = getmntinfo(&mp, MNT_NOWAIT);
- 	if (n == 0)
- 		fatal("%s: getmntinfo: %s", blkdevice, strerror(errno));
-@@ -277,14 +292,19 @@
- 			fatal("%s is mounted on %s", blkdevice, mp->f_mntonname);
- 		++mp;
- 	}
+ 		n = getmntinfo(&mp, MNT_NOWAIT);
+ 		if (n == 0)
+ 			fatal("%s: getmntinfo: %s", blkdevice, strerror(errno));
+@@ -310,15 +326,20 @@
+ 				fatal("%s is mounted on %s", blkdevice, mp->f_mntonname);
+ 			++mp;
+ 		}
 +#endif
+ 	}
  
 -	if (hfs_newfs(rawdevice, forceHFS, true) < 0) {
 +	if (hfs_newfs(blkdevice, forceHFS, true) < 0) {
@@ -1304,16 +1210,7 @@ Description:
  	}
  
  	exit(0);
-@@ -458,7 +478,7 @@
- 			fatal("%s: block size is too small for %lld sectors", optarg, gBlockSize, sectorCount);
- 
- 		if (gBlockSize < HFSOPTIMALBLKSIZE)
--			warnx("Warning: %ld is a non-optimal block size (4096 would be a better choice)", gBlockSize);
-+			warnx("Warning: %i is a non-optimal block size (4096 would be a better choice)", gBlockSize);
- 	}
- }
- 
-@@ -472,7 +492,9 @@
+@@ -506,7 +527,9 @@
  	int fso = 0;
  	int retval = 0;
  	hfsparams_t defaults = {0};
@@ -1321,149 +1218,67 @@ Description:
  	u_int64_t maxSectorsPerIO;
 +#endif
  
- 	if (gNoCreate) {
- 		fso = open( device, O_RDONLY | O_NDELAY, 0 );
-@@ -485,7 +507,33 @@
- 
- 	if (fstat( fso, &stbuf) < 0)
- 		fatal("%s: %s", device, strerror(errno));
-+#if LINUX
-+	dip.sectorSize = 512;
-+	dip.sectorsPerIO = 256;
- 
-+#ifndef	BLKGETSIZE
-+#define	BLKGETSIZE		_IO(0x12,96)
-+#endif
-+#ifndef	BLKGETSIZE64
-+#define BLKGETSIZE64		_IOR(0x12,114,size_t)
-+#endif
-+
-+	if (S_ISREG(stbuf.st_mode)) {
-+                dip.totalSectors = stbuf.st_size / 512;
-+        }
-+	else if (S_ISBLK(stbuf.st_mode)) {
-+                unsigned long size;
-+                u_int64_t size64;
-+                if (!ioctl(fso, BLKGETSIZE64, &size64))
-+                        dip.totalSectors = size64 / 512;
-+                else if (!ioctl(fso, BLKGETSIZE, &size))
-+                        dip.totalSectors = size;
-+                else
-+                        fatal("%s: %s", device, strerror(errno));
-+        }
-+	else
-+                fatal("%s: is not a block device", device);
-+#else
- 	if (ioctl(fso, DKIOCGETBLOCKCOUNT, &dip.totalSectors) < 0)
- 		fatal("%s: %s", device, strerror(errno));
- 
-@@ -493,14 +541,17 @@
- 		fatal("%s: %s", device, strerror(errno));
- 
- 	if (ioctl(fso, DKIOCGETMAXBLOCKCOUNTWRITE, &maxSectorsPerIO) < 0)
--		dip.sectorsPerIO = (128 * 1024) / dip.sectorSize;  /* use 128K as default */
-+		dip.sectorsPerIO = (128 * 1024) / dip.sectorSize; /* use 128K as default */
- 	else
- 		dip.sectorsPerIO = MIN(maxSectorsPerIO, (1024 * 1024) / dip.sectorSize);
-+#endif
-+
-         /*
--         * The make_hfs code currentlydoes 512 byte sized I/O.
-+         * The make_hfs code currently does 512 byte sized I/O.
-          * If the sector size is bigger than 512, start over
-          * using the block device (to get de-blocking).
-          */       
-+#if !LINUX
-         if (dip.sectorSize != kBytesPerSector) {
- 		if (isRaw) {
- 			close(fso);
-@@ -515,7 +566,8 @@
+ 	if (gPartitionSize) {
  			dip.sectorSize = kBytesPerSector;
- 		}
-         }
--  
+@@ -526,6 +549,34 @@
+ 	
+ 		if (fstat( fso, &stbuf) < 0)
+ 			fatal("%s: %s", device, strerror(errno));
++#if LINUX
++		dip.sectorSize = 512;
++		dip.sectorsPerIO = 256;
++
++#	ifndef	BLKGETSIZE
++#	define	BLKGETSIZE		_IO(0x12,96)
++#	endif
++
++#	ifndef	BLKGETSIZE64
++#	define BLKGETSIZE64		_IOR(0x12,114,size_t)
++#	endif
++
++		if (S_ISREG(stbuf.st_mode)) {
++		        dip.totalSectors = stbuf.st_size / 512;
++	        }
++		else if (S_ISBLK(stbuf.st_mode)) {
++	                unsigned long size;
++	                u_int64_t size64;
++			if (!ioctl(fso, BLKGETSIZE64, &size64))
++				dip.totalSectors = size64 / 512;
++			else if (!ioctl(fso, BLKGETSIZE, &size))
++				dip.totalSectors = size;
++			else
++				fatal("%s: %s", device, strerror(errno));
++		}
++		else
++			fatal("%s: is not a block device", device);
++#else
+ 	
+ 		if (ioctl(fso, DKIOCGETBLOCKCOUNT, &dip.totalSectors) < 0)
+ 			fatal("%s: %s", device, strerror(errno));
+@@ -537,11 +588,14 @@
+ 			dip.sectorsPerIO = (128 * 1024) / dip.sectorSize;  /* use 128K as default */
+ 		else
+ 			dip.sectorsPerIO = MIN(maxSectorsPerIO, (1024 * 1024) / dip.sectorSize);
 +#endif
 +
- 	dip.fd = fso;
+ 		/*
+ 		 * The make_hfs code currentlydoes 512 byte sized I/O.
+ 		 * If the sector size is bigger than 512, start over
+ 		 * using the block device (to get de-blocking).
+ 		 */       
++#if !LINUX
+ 		if (dip.sectorSize != kBytesPerSector) {
+ 			if (isRaw) {
+ 				close(fso);
+@@ -556,7 +610,9 @@
+ 				dip.sectorSize = kBytesPerSector;
+ 			}
+ 		}
++#endif
+ 	}
++
  	dip.sectorOffset = 0;
  	time(&createtime);
-@@ -693,7 +745,7 @@
- 	defaults->catalogClumpSize = clumpSize;
- 	defaults->catalogNodeSize = catnodesiz;
- 	if (gBlockSize < 4096 && gBlockSize < catnodesiz)
--		warnx("Warning: block size %ld is less than catalog b-tree node size %ld", gBlockSize, catnodesiz);
-+		warnx("Warning: block size %i is less than catalog b-tree node size %i", gBlockSize, catnodesiz);
- 
- 	if (extclumpblks == 0) {
- 		clumpSize = CalcHFSPlusBTreeClumpSize(gBlockSize, extnodesiz, sectorCount, FALSE);
-@@ -706,7 +758,7 @@
- 	defaults->extentsClumpSize = clumpSize;
- 	defaults->extentsNodeSize = extnodesiz;
- 	if (gBlockSize < extnodesiz)
--		warnx("Warning: block size %ld is less than extents b-tree node size %ld", gBlockSize, extnodesiz);
-+		warnx("Warning: block size %i is less than extents b-tree node size %i", gBlockSize, extnodesiz);
- 
- 	if (atrclumpblks == 0) {
- 		clumpSize = 0;
-@@ -754,22 +806,22 @@
- 
- 	if (gNoCreate) {
- 		if (!gWrapper)
--			printf("%qd sectors (%lu bytes per sector)\n", sectorCount, sectorSize);
-+			printf("%lld sectors (%u bytes per sector)\n", sectorCount, sectorSize);
- 		printf("HFS Plus format parameters:\n");
- 		printf("\tvolume name: \"%s\"\n", gVolumeName);
--		printf("\tblock-size: %lu\n", defaults->blockSize);
--		printf("\ttotal blocks: %lu\n", totalBlocks);
-+		printf("\tblock-size: %u\n", defaults->blockSize);
-+		printf("\ttotal blocks: %u\n", totalBlocks);
- 		if (gJournaled)
- 			printf("\tjournal-size: %dk\n", (int)defaults->journalSize/1024);
--		printf("\tfirst free catalog node id: %lu\n", defaults->nextFreeFileID);
--		printf("\tcatalog b-tree node size: %lu\n", defaults->catalogNodeSize);
--		printf("\tinitial catalog file size: %lu\n", defaults->catalogClumpSize);
--		printf("\textents b-tree node size: %lu\n", defaults->extentsNodeSize);
--		printf("\tinitial extents file size: %lu\n", defaults->extentsClumpSize);
--		printf("\tinitial allocation file size: %lu (%lu blocks)\n",
-+		printf("\tfirst free catalog node id: %u\n", defaults->nextFreeFileID);
-+		printf("\tcatalog b-tree node size: %u\n", defaults->catalogNodeSize);
-+		printf("\tinitial catalog file size: %u\n", defaults->catalogClumpSize);
-+		printf("\textents b-tree node size: %u\n", defaults->extentsNodeSize);
-+		printf("\tinitial extents file size: %u\n", defaults->extentsClumpSize);
-+		printf("\tinitial allocation file size: %u (%u blocks)\n",
- 			defaults->allocationClumpSize, defaults->allocationClumpSize / gBlockSize);
--		printf("\tdata fork clump size: %lu\n", defaults->dataClumpSize);
--		printf("\tresource fork clump size: %lu\n", defaults->rsrcClumpSize);
-+		printf("\tdata fork clump size: %u\n", defaults->dataClumpSize);
-+		printf("\tresource fork clump size: %u\n", defaults->rsrcClumpSize);
- 		if (defaults->flags & kUseAccessPerms) {
- 			printf("\tuser ID: %d\n", (int)defaults->owner);
- 			printf("\tgroup ID: %d\n", (int)defaults->group);
-@@ -844,17 +896,17 @@
- 	}
- 	
- 	if (gNoCreate) {
--		printf("%ld sectors at %ld bytes per sector\n", sectorCount, sectorSize);
-+		printf("%i sectors at %i bytes per sector\n", sectorCount, sectorSize);
- 		printf("%s format parameters:\n", gWrapper ? "HFS Wrapper" : "HFS");
- 		printf("\tvolume name: \"%s\"\n", gVolumeName);
--		printf("\tblock-size: %ld\n", defaults->blockSize);
--		printf("\ttotal blocks: %ld\n", sectorCount / (alBlkSize / sectorSize) );
--		printf("\tfirst free catalog node id: %ld\n", defaults->nextFreeFileID);
--		printf("\tinitial catalog file size: %ld\n", defaults->catalogClumpSize);
--		printf("\tinitial extents file size: %ld\n", defaults->extentsClumpSize);
--		printf("\tfile clump size: %ld\n", defaults->dataClumpSize);
-+		printf("\tblock-size: %i\n", defaults->blockSize);
-+		printf("\ttotal blocks: %i\n", sectorCount / (alBlkSize / sectorSize) );
-+		printf("\tfirst free catalog node id: %i\n", defaults->nextFreeFileID);
-+		printf("\tinitial catalog file size: %i\n", defaults->catalogClumpSize);
-+		printf("\tinitial extents file size: %i\n", defaults->extentsClumpSize);
-+		printf("\tfile clump size: %i\n", defaults->dataClumpSize);
- 		if (hfsgrowblks)
--			printf("\twrapper growable from %ld to %ld sectors\n", sectorCount, hfsgrowblks);
-+			printf("\twrapper growable from %i to %i sectors\n", sectorCount, hfsgrowblks);
- 	}
- }
  
 --- a/newfs_hfs.tproj/newfs_hfs.h
 +++ b/newfs_hfs.tproj/newfs_hfs.h
@@ -1472,12 +1287,11 @@ Description:
   * @APPLE_LICENSE_HEADER_END@
   */
 - 
--#include <CoreFoundation/CFBase.h>
 +
 +#if LINUX
 +#include "missing.h"
 +#else
-+#include <CoreFoundation/CFBase.h>*/
+ #include <CoreFoundation/CFBase.h>
 +#endif
  
  /*
