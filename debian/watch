@@ -1,2 +1,3 @@
-# Since Apple requires a login to download new packages, this watch
-# file is a no-op.
+version=3
+opts="uversionmangle=s/\///" \
+http://www.opensource.apple.com/source/diskdev_cmds/diskdev_cmds-(.*)

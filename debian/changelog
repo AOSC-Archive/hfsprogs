@@ -1,3 +1,12 @@
+hfsprogs (332.14-8) unstable; urgency=low
+
+  * fix spelling in manpages, thanks to A. Costa. (Closes: #547425).
+  * include a README.source file as per policy.
+  * include a watch file to track upstream versions.
+  * upgrade Standards-Version 3.8.3. No changes needed.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sun, 25 Oct 2009 10:01:03 -0200
+
 hfsprogs (332.14-7) unstable; urgency=low
 
   * debian/control:

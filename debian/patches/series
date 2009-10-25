@@ -7,3 +7,4 @@
 60-hfs-wrapper-boot-in-usr-share.diff
 70-diskdev_cmds_system_check-332.14.patch
 80-remove_see-also_from_manpage.patch
+90-fix_manpage_typos.patch
