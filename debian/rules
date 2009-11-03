@@ -12,7 +12,7 @@ mandir=$(tmpdir)/usr/share/man/$(mansec)
 
 include /usr/share/quilt/quilt.make
 
-#CFLAGS = -Wall -Wextra -g
+#CFLAGS += -Wall -Wextra -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
