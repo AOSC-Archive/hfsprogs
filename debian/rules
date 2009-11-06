@@ -12,15 +12,16 @@ mandir=$(tmpdir)/usr/share/man/$(mansec)
 
 include /usr/share/quilt/quilt.make
 
-#CFLAGS += -Wall -Wextra -g
+CFLAGS += -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
-	CFLAGS += -O2
+	CFLAGS += -Os
 endif
 
 CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
+LDFLAGS += -Wl,--as-needed
 CFLAGSFSCK = $(CFLAGS)
 LDFLAGSFSCK = $(LDFLAGS)
 
@@ -46,7 +47,7 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	cd newfs_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)"
+	cd newfs_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"
 	cd fsck_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGSFSCK)" LDFLAGS="$(LDFLAGSFSCK)"
 
 	touch $@

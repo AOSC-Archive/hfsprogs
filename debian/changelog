@@ -1,3 +1,12 @@
+hfsprogs (332.25-3) experimental; urgency=low
+
+  * fix compilation flags with binutils-gold. (Closes: #554800).
+  * link with -Wl,--as-needed.
+  * honor *FLAGS in our custom-made makefiles.
+  * build again with -Wall -g to get closer to a release.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Fri, 06 Nov 2009 19:44:31 -0200
+
 hfsprogs (332.25-2) experimental; urgency=low
 
   * re-include patch to fix spelling errors in the manpage.

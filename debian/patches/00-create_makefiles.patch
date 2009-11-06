@@ -7,7 +7,7 @@ Description:
 +++ b/Makefile.lnx
 @@ -0,0 +1,8 @@
 +CC := gcc
-+CFLAGS := -g3 -Wall -I$(PWD)/include -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1
++CFLAGS += -I$(PWD)/include -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1
 +SUBDIRS := newfs_hfs.tproj fsck_hfs.tproj
 +
 +all clean:
@@ -25,7 +25,7 @@ Description:
 +fsck_hfs: $(OFILES) dfalib/libdfa.a
 +
 +dfalib/libdfa.a: FORCE
-+	$(MAKE) -C dfalib -f Makefile.lnx libdfa.a
++	$(MAKE) -C dfalib -f Makefile.lnx CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" libdfa.a
 +
 +clean:
 +	$(RM) fsck_hfs $(OFILES)
@@ -59,7 +59,7 @@ Description:
 +all: newfs_hfs
 +
 +newfs_hfs: $(OFILES)
-+	${CC} ${CFLAGS} -o newfs_hfs ${OFILES} -lssl
++	$(CC) $(CFLAGS) $(LDFLAGS) -o newfs_hfs $(OFILES) -lcrypto
 +
 +clean:
 +	$(RM) newfs_hfs $(OFILES)
