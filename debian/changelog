@@ -1,3 +1,24 @@
+hfsprogs (332.25-4) unstable; urgency=low
+
+  * upload to unstable, now that earlier versions are in testing.
+  * change to "3.0 (quilt)" format.
+    + drop explicit mentions of quilt on debian/rules.
+    + drop build-dependency on quilt on debian/control.
+    + create debian/source/format.
+    + remove debian/README.source.
+  * debian/control:
+    + remove armeb from arch list.
+    + group kfreebsd-* entries together.
+  * debian/rules:
+    + don't recursively remove files, when no directory is involved.
+    + clean up internal variables.
+    + enable more warnings.
+    + optimize with O2 for the moment, instead of Os.
+  * debian/{rules,control}:
+    + make hardened builds.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Mon, 16 Nov 2009 05:40:00 -0200
+
 hfsprogs (332.25-3) experimental; urgency=low
 
   * fix compilation flags with binutils-gold. (Closes: #554800).

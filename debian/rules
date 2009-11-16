@@ -3,21 +3,22 @@
 
 ############################################################
 # Initial setup
-pkgname=hfsprogs
-tmpdir=debian/$(pkgname)
-shrdir=$(tmpdir)/usr/share/$(pkgname)
-docdir=$(tmpdir)/usr/share/doc/$(pkgname)
-mansec=man8
-mandir=$(tmpdir)/usr/share/man/$(mansec)
+package=hfsprogs
+tmpdir=debian/$(package)
+shrdir=$(tmpdir)/usr/share/$(package)
+docdir=$(tmpdir)/usr/share/doc/$(package)
+mansec=8
+mandir=$(tmpdir)/usr/share/man/man$(mansec)
 
-include /usr/share/quilt/quilt.make
+export DEB_BUILD_HARDENING=1
+export DEB_BUILD_HARDENING_DEBUG=1
 
-CFLAGS += -Wall -g
+CFLAGS += -Wall -Wextra -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
-	CFLAGS += -Os
+	CFLAGS += -O2
 endif
 
 CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
@@ -25,8 +26,6 @@ LDFLAGS += -Wl,--as-needed
 CFLAGSFSCK = $(CFLAGS)
 LDFLAGSFSCK = $(LDFLAGS)
 
-# This deals with both kfreebsd-amd64 and amd64,
-# as it matches only a substring.
 DEB_HOST_ARCH	?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
 ifneq (,$(findstring amd64,$(DEB_HOST_ARCH)))
 	CFLAGSFSCK += -m32
@@ -37,7 +36,7 @@ endif
 # The targets
 
 configure: configure-stamp
-configure-stamp: $(QUILT_STAMPFN)
+configure-stamp:
 	dh_testdir
 
 	touch configure-stamp
@@ -52,14 +51,13 @@ build-stamp: configure-stamp
 
 	touch $@
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	rm -rf newfs_hfs.tproj/*.o  newfs_hfs.tproj/newfs_hfs
-	rm -rf fsck_hfs.tproj/*.o   fsck_hfs.tproj/fsck_hfs
-	rm -rf fsck_hfs.tproj/dfalib/*.o fsck_hfs.tproj/dfalib/libdfa.a
+	rm -f newfs_hfs.tproj/*.o  fsck_hfs.tproj/*.o fsck_hfs.tproj/dfalib/*.o
+	rm -f newfs_hfs.tproj/newfs_hfs fsck_hfs.tproj/fsck_hfs fsck_hfs.tproj/dfalib/libdfa.a
 	dh_clean
 
 install: build
