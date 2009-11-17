@@ -11,26 +11,17 @@ mansec=8
 mandir=$(tmpdir)/usr/share/man/man$(mansec)
 
 export DEB_BUILD_HARDENING=1
-export DEB_BUILD_HARDENING_DEBUG=1
 
 CFLAGS += -Wall -Wextra -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
 else
-	CFLAGS += -O2
+	CFLAGS += -Os
 endif
 
 CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
 LDFLAGS += -Wl,--as-needed
-CFLAGSFSCK = $(CFLAGS)
-LDFLAGSFSCK = $(LDFLAGS)
-
-DEB_HOST_ARCH	?= $(shell dpkg-architecture -qDEB_HOST_ARCH)
-ifneq (,$(findstring amd64,$(DEB_HOST_ARCH)))
-	CFLAGSFSCK += -m32
-	LDFLAGSFSCK += -m32
-endif
 
 ############################################################
 # The targets
@@ -46,8 +37,7 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 
-	cd newfs_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"
-	cd fsck_hfs.tproj/; $(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGSFSCK)" LDFLAGS="$(LDFLAGSFSCK)"
+	$(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"
 
 	touch $@
 

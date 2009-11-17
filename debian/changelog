@@ -1,3 +1,18 @@
+hfsprogs (332.25-5) unstable; urgency=low
+
+  * incorporate Goswin von Brederlow's patch.
+    + eliminate the need to use -m32 in 64-bit arches.
+    + eliminate the need for the gcc-multilib hack.
+    + can compile on every arch out there.
+    + upstream's code could be cleaner.
+    + Closes: #436159.
+  * optimize for size again
+  * avoid duplication of code (strlcpy):
+    + linking against libbsd.
+    + kill custom workaround of strlcpy. Closes: #556596.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Tue, 17 Nov 2009 06:17:50 -0200
+
 hfsprogs (332.25-4) unstable; urgency=low
 
   * upload to unstable, now that earlier versions are in testing.
