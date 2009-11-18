@@ -1,3 +1,9 @@
+hfsprogs (332.25-6) experimental; urgency=low
+
+  * some code cleanup against upstream.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Wed, 18 Nov 2009 07:22:09 -0200
+
 hfsprogs (332.25-5) unstable; urgency=low
 
   * incorporate Goswin von Brederlow's patch.

@@ -10,3 +10,5 @@
 80-remove_see-also_from_manpage.patch
 90-fix_manpage_typos.patch
 90-rename_dprintf.patch
+91-remove-nils.patch
+92-fix-types.patch
