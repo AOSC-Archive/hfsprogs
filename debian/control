@@ -4,7 +4,7 @@ Priority: optional
 DM-Upload-Allowed: yes
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Homepage: http://www.opensource.apple.com/darwinsource/10.4/
-Build-Depends: debhelper (>= 5), libssl-dev, libbsd-dev, hardening-wrapper
+Build-Depends: debhelper (>= 5), libssl-dev, libbsd-dev, hardening-wrapper, kfreebsd-kernel-headers [ kfreebsd-amd64 kfreebsd-i386 ]
 Standards-Version: 3.8.3
 
 Package: hfsprogs
