@@ -1,3 +1,12 @@
+hfsprogs (332.25-8) unstable; urgency=low
+
+  * Use a FTBFS bug revealed by the kfreebsd-* ports.
+    This was reported by Cyril Brulebois, and patched by: Petr Salinger.
+    Closes: #566916
+  * Remove b-dep on kfreebsd-kernel-headers, as it is build-essential.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sun, 31 Jan 2010 07:01:54 -0200
+
 hfsprogs (332.25-7) unstable; urgency=low
 
   * Include b-dep on kfreebsd-kernel-headers on kfreebsd-*. Closes: #566916

@@ -233,7 +233,7 @@ Description:
 +}PACKED_S;
 +
 +
-+#ifdef __APPLE_API_PRIVATE
++#if 1
 +/*
 + * Mac OS X has a special directory for linked and unlinked files (HFS Plus only).
 + * This directory and its contents are never exported from the filesystem under
@@ -944,7 +944,7 @@ Description:
 +#endif /* ! _HFS_MOUNT_H_ */
 --- /dev/null
 +++ b/include/sys/appleapiopts.h
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,52 @@
 +/*
 + * Copyright (c) 2002 Apple Computer, Inc. All rights reserved.
 + *
@@ -988,10 +988,6 @@ Description:
 +#ifndef __APPLE_API_UNSTABLE
 +#define __APPLE_API_UNSTABLE
 +#endif /* __APPLE_API_UNSTABLE */
-+
-+#ifndef __APPLE_API_PRIVATE
-+#define __APPLE_API_PRIVATE
-+#endif /* __APPLE_API_PRIVATE */
 +
 +#ifndef __APPLE_API_OBSOLETE
 +#define __APPLE_API_OBSOLETE
