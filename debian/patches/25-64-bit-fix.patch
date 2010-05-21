@@ -1,6 +1,6 @@
 --- a/fsck_hfs.tproj/dfalib/SControl.c
 +++ b/fsck_hfs.tproj/dfalib/SControl.c
-@@ -1034,7 +1034,7 @@
+@@ -1096,7 +1096,7 @@
  		btcbP = (BTreeControlBlock*)fcbP->fcbBtree;
  		if ( btcbP != nil)
  		{
@@ -9,7 +9,7 @@
  			{
  				if(((BTreeExtensionsRec*)btcbP->refCon)->BTCBMPtr != nil)
  				{
-@@ -1043,13 +1043,13 @@
+@@ -1105,13 +1105,13 @@
  				}
  				DisposeMemory( (Ptr)btcbP->refCon );
  				err = MemError();
@@ -25,7 +25,7 @@
  			{
  				if(((BTreeExtensionsRec*)btcbP->refCon)->BTCBMPtr != nil)
  				{
-@@ -1058,7 +1058,7 @@
+@@ -1120,7 +1120,7 @@
  				}
  				DisposeMemory( (Ptr)btcbP->refCon );
  				err = MemError();
@@ -36,7 +36,7 @@
  	}
 --- a/fsck_hfs.tproj/dfalib/SVerify1.c
 +++ b/fsck_hfs.tproj/dfalib/SVerify1.c
-@@ -789,8 +789,8 @@
+@@ -872,8 +872,8 @@
  	//
  	//	set up our DFA extended BTCB area.  Will we have enough memory on all HFS+ volumes.
  	//
@@ -47,7 +47,7 @@
  		err = R_NoMem;
  		goto exit;
  	}
-@@ -1144,8 +1144,8 @@
+@@ -1227,8 +1227,8 @@
  	//	set up our DFA extended BTCB area.  Will we have enough memory on all HFS+ volumes.
  	//
  
@@ -58,7 +58,7 @@
  		err = R_NoMem;
  		goto exit;
  	}
-@@ -1779,8 +1779,8 @@
+@@ -1862,8 +1862,8 @@
  	//
  	//	set up our DFA extended BTCB area.  Will we have enough memory on all HFS+ volumes.
  	//
@@ -69,7 +69,7 @@
  		err = R_NoMem;
  		goto exit;
  	}
-@@ -1793,7 +1793,7 @@
+@@ -1876,7 +1876,7 @@
  	}
  	else
  	{

@@ -1,6 +1,6 @@
 --- a/fsck_hfs.tproj/cache.c
 +++ b/fsck_hfs.tproj/cache.c
-@@ -961,20 +961,21 @@
+@@ -1214,20 +1214,21 @@
   */
  int CacheRawRead (Cache_t *cache, uint64_t off, uint32_t len, void *buf)
  {
@@ -29,7 +29,7 @@
  
  	/* Update counters */
  	cache->DiskRead++;
-@@ -989,21 +990,22 @@
+@@ -1242,21 +1243,22 @@
   */
  int CacheRawWrite (Cache_t *cache, uint64_t off, uint32_t len, void *buf)
  {

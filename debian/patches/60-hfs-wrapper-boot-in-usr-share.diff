@@ -4,7 +4,18 @@ Description:
   systems (since it is arch independent).
 --- a/newfs_hfs.tproj/makehfs.c
 +++ b/newfs_hfs.tproj/makehfs.c
-@@ -70,7 +70,7 @@
+@@ -69,17 +69,17 @@
+ #include <TargetConditionals.h>
+ 
+ extern Boolean _CFStringGetFileSystemRepresentation(CFStringRef string, UInt8 *buffer, CFIndex maxBufLen);
++#endif
+ 
+ #include <hfs/hfs_format.h>
+ #include <hfs/hfs_mount.h>
+ #include "hfs_endian.h"
+-#endif
+ 
+ #include "newfs_hfs.h"
  #include "readme.h"
  
  
@@ -13,3 +24,19 @@ Description:
  
  #define HFS_JOURNAL_FILE	".journal"
  #define HFS_JOURNAL_INFO	".journal_info_block"
+@@ -177,6 +177,7 @@
+ #if LINUX
+ #define ENCODING_TO_BIT(e)       (e)
+ #endif
++#if !LINUX
+ #if TARGET_OS_EMBEDDED
+ #define ENCODING_TO_BIT(e)				 \
+ 	  ((e) < 48 ? (e) : 0)
+@@ -186,6 +187,7 @@
+           ((e) == kCFStringEncodingMacUkrainian ? 48 :   \
+           ((e) == kCFStringEncodingMacFarsi ? 49 : 0)))
+ #endif
++#endif
+ 
+ /*
+  * make_hfs

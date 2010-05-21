@@ -14,8 +14,8 @@ Last-Update: 2009-10-25
  .It Fl l
 --- a/newfs_hfs.tproj/newfs_hfs.8
 +++ b/newfs_hfs.tproj/newfs_hfs.8
-@@ -66,7 +66,7 @@
- Specify the access permissions mask for the file system's root directory.
+@@ -67,7 +67,7 @@
+ directory.
  .It Fl h
  Creates a legacy HFS format filesystem. This option
 -is not recomended for file systems that will be

@@ -1,6 +1,6 @@
 --- a/fsck_hfs.tproj/dfalib/SVerify1.c
 +++ b/fsck_hfs.tproj/dfalib/SVerify1.c
-@@ -2157,9 +2157,9 @@
+@@ -2240,9 +2240,9 @@
  	
  	if (doDelete == true) {
  		result = DeleteBTreeRecord(GPtr->calculatedAttributesFCB, key);
@@ -12,7 +12,7 @@
  		}
  		
  		/* Set flags to mark header and map dirty */
-@@ -3034,7 +3034,7 @@
+@@ -3347,7 +3347,7 @@
  		//	checkout the extent record first
  		err = ChkExtRec( GPtr, extents, &lastExtentIndex );
  		if (err != noErr) {
@@ -23,7 +23,7 @@
  			if ((fileNumber < kHFSFirstUserCatalogNodeID) ||
 --- a/fsck_hfs.tproj/dfalib/SRepair.c
 +++ b/fsck_hfs.tproj/dfalib/SRepair.c
-@@ -1825,13 +1825,13 @@
+@@ -2509,13 +2509,13 @@
  	result = BTSearchRecord(GPtr->calculatedAttributesFCB, &iterator, 
  				kInvalidMRUCacheKey, &btRecord, &recSize, &iterator);
  	if (result) {
@@ -39,7 +39,7 @@
  		result = btNotFound;
  		goto out;
  	}
-@@ -1862,7 +1862,7 @@
+@@ -2546,7 +2546,7 @@
  		result = BTReplaceRecord(GPtr->calculatedAttributesFCB, &iterator,
  					&btRecord, recSize);
  		if (result) {
@@ -48,7 +48,7 @@
  			goto out;
  		}
  	}
-@@ -2058,7 +2058,7 @@
+@@ -2742,7 +2742,7 @@
  
  		/* Delete the extent record */ 
  		err = DeleteBTreeRecord(GPtr->calculatedExtentsFCB, &extentKey);
@@ -57,7 +57,7 @@
  		if (err) {
  			goto create_symlink;
  		}
-@@ -3227,12 +3227,12 @@
+@@ -4007,12 +4007,12 @@
  											  &extentData, &recordSize, &foundExtentIndex);
  				foundLocation = extentsBTree;
  				if (err != noErr) {
@@ -72,7 +72,7 @@
  				goto out;
  			}
  		}
-@@ -3241,7 +3241,7 @@
+@@ -4021,7 +4021,7 @@
  	err = CopyDiskBlocks(GPtr, extentInfo->startBlock, extentInfo->blockCount, 
  						 extentInfo->newStartBlock);
  	if (err != noErr) {
@@ -81,16 +81,16 @@
  		goto out;
  	}
  	
-@@ -3260,7 +3260,7 @@
+@@ -4040,7 +4040,7 @@
  
  	}
  	if (err != noErr) {
--		dprintf (d_error|d_overlap, "%s: Error in updating extent record for fileID = %d (err=%d)\n", __FUNCTION__, extentInfo->fileID, err);
+-	        dprintf (d_error|d_overlap, "%s: Error in updating extent record for fileID = %d (err=%d)\n", __FUNCTION__, extentInfo->fileID, err);
 +		dbg_printf (d_error|d_overlap, "%s: Error in updating extent record for fileID = %d (err=%d)\n", __FUNCTION__, extentInfo->fileID, err);
  		goto out;
  	}
  
-@@ -3491,7 +3491,7 @@
+@@ -4271,7 +4271,7 @@
  	result = BTSearchRecord(GPtr->calculatedAttributesFCB, &iterator, 
  				kInvalidMRUCacheKey, &btRecord, recordSize, &iterator);
  	if (result) {
@@ -101,9 +101,9 @@
  	
 --- a/fsck_hfs.tproj/fsck_debug.c
 +++ b/fsck_hfs.tproj/fsck_debug.c
-@@ -25,18 +25,18 @@
- #include <stdio.h>
- #include <stdarg.h>
+@@ -26,18 +26,18 @@
+ #include "fsck_debug.h"
+ #include "fsck_hfs.h"
  
 -/* Current debug level of fsck_hfs for printing messages via dprintf */
 +/* Current debug level of fsck_hfs for printing messages via dbg_printf */
@@ -124,7 +124,7 @@
   * debug message types.  Only the messages whose type have one or more similar
   * bits set in comparison with current global debug level are printed. 
   *
-@@ -56,7 +56,7 @@
+@@ -57,7 +57,7 @@
   * Output:
   *	Nothing
   */

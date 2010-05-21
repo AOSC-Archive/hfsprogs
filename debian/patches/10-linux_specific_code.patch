@@ -81,37 +81,32 @@ Description:
   * @APPLE_LICENSE_HEADER_END@
   */
  #include "SRuntime.h"
-@@ -28,33 +28,71 @@
- #include <unistd.h>
+@@ -30,8 +30,16 @@
  #include <errno.h>
  #include <sys/ioctl.h>
--
+ 
 +#if LINUX
++
 +#include <fcntl.h>
 +#include <sys/stat.h>
++
 +#else
  #include <IOKit/storage/IOMediaBSDClient.h>
--
+ 
++
 +#endif /* LINUX */
  #else
--
+ 
  #include <Files.h>
- #include <Device.h>
- #include <Disks.h>
- 
- #endif
- 
--
- OSErr GetDeviceSize(int driveRefNum, UInt64 *numBlocks, UInt32 *blockSize)
- {
+@@ -46,16 +54,53 @@
  #if BSD
  	UInt64 devBlockCount = 0;
  	int devBlockSize = 0;
 +#if LINUX
 +	struct stat stbuf;
-+
-+	devBlockSize = 512;
  
++	devBlockSize = 512;
++
 +#ifndef BLKGETSIZE
 +#define BLKGETSIZE              _IO(0x12,96)
 +#endif
@@ -119,7 +114,7 @@ Description:
 +#define BLKGETSIZE64            _IOR(0x12,114,size_t)
 +#endif
 +	if (fstat(driveRefNum, &stbuf) < 0){
-+		printf("Error: %s\n", strerror(errno));
++		plog("Error: %s\n", strerror(errno));
 +		return(-1);
 +	}
 +
@@ -134,31 +129,31 @@ Description:
 +                else if (!ioctl(driveRefNum, BLKGETSIZE, &size))
 +                        devBlockCount = size;
 +                else{
-+                        printf("Error: %s\n", strerror(errno));
++                        plog("Error: %s\n", strerror(errno));
 +			return(-1);
 +		}
 +
 +        }
 +        else{
-+                printf("Device is not a block device");
++                plog("Device is not a block device");
 +		return(-1);
 +	}
 +#elif BSD
  	if (ioctl(driveRefNum, DKIOCGETBLOCKCOUNT, &devBlockCount) < 0) {
- 		printf("ioctl(DKIOCGETBLOCKCOUNT) for fd %d: %s\n", driveRefNum, strerror(errno));
+ 	plog("ioctl(DKIOCGETBLOCKCOUNT) for fd %d: %s\n", driveRefNum, strerror(errno));
  		return (-1);
  	}
 -	
 +
  	if (ioctl(driveRefNum, DKIOCGETBLOCKSIZE, &devBlockSize) < 0) {
- 		printf("ioctl(DKIOCGETBLOCKSIZE) for fd %d: %s\n", driveRefNum, strerror(errno));
+ 	plog("ioctl(DKIOCGETBLOCKSIZE) for fd %d: %s\n", driveRefNum, strerror(errno));
  		return (-1);
  	}
 +#endif /* BSD */
  
  	if (devBlockSize != 512) {
  		*numBlocks = (devBlockCount * (UInt64)devBlockSize) / 512;
-@@ -70,24 +108,24 @@
+@@ -71,24 +116,24 @@
  	{
  		/* return format list status code */
  		kFmtLstCode = 6,
@@ -188,7 +183,7 @@ Description:
  	ParamBlockRec	pb;
  	FormatListRec	formatListRecords[kMaxFormatListRecs];
  	DrvSts			status;
-@@ -95,22 +133,22 @@
+@@ -96,22 +141,22 @@
  	OSErr			result;
  	unsigned long	blocks			= 0;
  
@@ -216,7 +211,7 @@ Description:
  		/* Get the current disk's size. */
  		for( formatListRecIndex = 0;
  			 formatListRecIndex < pb.cntrlParam.csParam[0];
-@@ -131,7 +169,7 @@
+@@ -132,7 +177,7 @@
  	else if ( driveQElementPtr->dQRefNum == (short)kSonyRefNum )
  	{
  		/* The drive is a non-SuperDrive floppy which only supports 400K and 800K disks */
@@ -225,7 +220,7 @@ Description:
  		result = DriveStatus(driveQElementPtr->dQDrive, &status);
  		if ( result == noErr )
  		{
-@@ -140,11 +178,11 @@
+@@ -141,11 +186,11 @@
  				case kSingleSided:
  					blocks = kSingleSidedSize;
  					break;
@@ -239,7 +234,7 @@ Description:
  				default:		//	This should never happen
  					result = paramErr;
  					break;
-@@ -155,20 +193,20 @@
+@@ -156,20 +201,20 @@
  	{
  		/* The drive is not a floppy and it doesn't support ReturnFormatList */
  		/* so use the dQDrvSz field(s) */
@@ -264,7 +259,7 @@ Description:
  			default:		//	This should never happen
  				result = paramErr;
  				break;
-@@ -177,7 +215,7 @@
+@@ -178,7 +223,7 @@
  
  	*numBlocks = blocks;
  	*blockSize = 512;
@@ -273,7 +268,7 @@ Description:
  	return( result );
  #endif
  }
-@@ -188,7 +226,7 @@
+@@ -189,7 +234,7 @@
  #if BSD
  	off_t seek_off;
  	ssize_t	nbytes;
@@ -296,7 +291,7 @@ Description:
  {
 --- a/fsck_hfs.tproj/dfalib/SRepair.c
 +++ b/fsck_hfs.tproj/dfalib/SRepair.c
-@@ -1617,7 +1617,9 @@
+@@ -2301,7 +2301,9 @@
  
  static	OSErr	FixWrapperExtents( SGlobPtr GPtr, RepairOrderPtr p )
  {
@@ -321,7 +316,7 @@ Description:
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-@@ -91,10 +94,12 @@
+@@ -90,10 +93,12 @@
  
  typedef u_int32_t	HFSCatalogNodeID;
  
@@ -336,7 +331,7 @@ Description:
  enum {
 --- a/fsck_hfs.tproj/dfalib/SUtils.c
 +++ b/fsck_hfs.tproj/dfalib/SUtils.c
-@@ -380,7 +380,8 @@
+@@ -472,7 +472,8 @@
  //				GPtr->realVCB			Real in-memory vcb
  //------------------------------------------------------------------------------
  
@@ -346,7 +341,7 @@ Description:
  OSErr GetVolumeFeatures( SGlobPtr GPtr )
  {
  	OSErr					err;
-@@ -418,7 +419,7 @@
+@@ -510,7 +511,7 @@
  	return( noErr );
  }
  #endif
@@ -367,7 +362,7 @@ Description:
  
  #include "BTree.h"
  #include "BTreePrivate.h"
-@@ -1354,8 +1356,13 @@
+@@ -1353,8 +1355,13 @@
  	 * clump size for read-only media is irrelevant we skip the clump size 
  	 * check to avoid non useful warnings. 
  	 */
@@ -383,8 +378,8 @@ Description:
  		PrintError(GPtr, E_InvalidClumpSize, 0);
 --- a/fsck_hfs.tproj/dfalib/Scavenger.h
 +++ b/fsck_hfs.tproj/dfalib/Scavenger.h
-@@ -37,11 +37,16 @@
- #include "../fsck_debug.h"
+@@ -38,15 +38,20 @@
+ #include "../fsck_hfs.h"
  
  #include <assert.h>
 +#if LINUX
@@ -396,12 +391,17 @@ Description:
  #include <sys/kauth.h>
 -#include <sys/errno.h>
  #include <sys/syslimits.h>
++#include <hfs/hfs_mount.h>
 +#endif
 +#include <sys/errno.h>
+ #include <sys/param.h>
+ #include <sys/sysctl.h>
+ #include <sys/mount.h>
+-#include <hfs/hfs_mount.h>
  
  #ifdef __cplusplus
  extern	"C" {
-@@ -1465,4 +1470,8 @@
+@@ -1574,4 +1579,8 @@
  };
  #endif
  
@@ -471,29 +471,29 @@ Description:
 +#endif
  
  	if (argc < 1) {
- 		(void) fprintf(stderr, "%s: missing special-device\n", progname);
-@@ -218,7 +226,9 @@
+ 		(void) fplog(stderr, "%s: missing special-device\n", progname);
+@@ -230,7 +238,9 @@
  	int chkLev, repLev, logLev;
  	int blockDevice_fd, canWrite;
  	char *unraw, *mntonname;
 +#if !LINUX
  	struct statfs *fsinfo;
 +#endif
- 	int fs_fd=-1;  // fd to the root-dir of the fs we're checking (only w/lfag == 1)
  
  	flags = 0;
-@@ -227,7 +237,9 @@
- 	canWrite = 0;
+ 	cdevname = filesys;
+@@ -239,6 +249,10 @@
  	unraw = NULL;
  	mntonname = NULL;
--
+ 
 +#if LINUX
 +	// FIXME
 +#else
- 	if (lflag) {
- 		result = getmntinfo(&fsinfo, MNT_NOWAIT);
- 
-@@ -257,10 +269,10 @@
++
+ 	//
+ 	// initialize the printing/logging without actually printing anything
+ 	// DO NOT DELETE THIS or else you can deadlock during a live fsck
+@@ -275,10 +289,10 @@
  		    }
  		}
  	}
@@ -506,36 +506,7 @@ Description:
  	if (setup( filesys, &blockDevice_fd, &canWrite ) == 0) {
  		if (preen)
  			pfatal("CAN'T CHECK FILE SYSTEM.");
-@@ -278,7 +290,7 @@
- 	repLev = kMajorRepairs;
- 	logLev = kVerboseLog;
- 
--	if (yflag)	
-+	if (yflag)
- 		repLev = kMajorRepairs;
- 
- 	if (quick) {
-@@ -298,16 +310,16 @@
- 
- 	if (nflag)
- 		repLev = kNeverRepair;
--		
-+
- 	if ( rebuildCatalogBtree ) {
- 		chkLev = kPartialCheck;
- 		repLev = kForceRepairs;  // this will force rebuild of catalog B-Tree file
- 	}
--		
-+
- 	/*
- 	 * go check HFS volume...
- 	 */
--	result = CheckHFS(	fsreadfd, fswritefd, chkLev, repLev, logLev, 
-+	result = CheckHFS(	fsreadfd, fswritefd, chkLev, repLev, logLev,
- 						guiControl, lostAndFoundMode, canWrite, &fsmodified );
- 	if (!hotroot) {
- 		ckfini(1);
-@@ -330,6 +342,9 @@
+@@ -349,6 +363,9 @@
  			}
  		}
  	} else {
@@ -545,7 +516,7 @@ Description:
  		struct statfs stfs_buf;
  		/*
  		 * Check to see if root is mounted read-write.
-@@ -339,19 +354,25 @@
+@@ -358,19 +375,25 @@
  		else
  			flags = 0;
  		ckfini(flags & MNT_RDONLY);
@@ -563,7 +534,7 @@ Description:
  		 * it, unless it is read-write, so we can continue.
  		 */
  		if (!preen)
- 			printf("\n***** FILE SYSTEM WAS MODIFIED *****\n");
+ 			plog("\n***** FILE SYSTEM WAS MODIFIED *****\n");
 -		if (flags & MNT_RDONLY) {		
 +#if LINUX
 +		// FIXME
@@ -572,31 +543,16 @@ Description:
  			bzero(&args, sizeof(args));
  			flags |= MNT_UPDATE | MNT_RELOAD;
  			if (mount("hfs", "/", flags, &args) == 0) {
-@@ -359,6 +380,7 @@
+@@ -378,6 +401,7 @@
  				goto ExitThisRoutine;
  			}
  		}
 +#endif
  		if (!preen)
- 			printf("\n***** REBOOT NOW *****\n");
+ 			plog("\n***** REBOOT NOW *****\n");
  		sync();
-@@ -367,7 +389,7 @@
- 	}
- 
- 	result = (result == 0) ? 0 : EEXIT;
--	
-+
- ExitThisRoutine:
- 	if (lflag) {
- 	    fcntl(fs_fd, F_THAW_FS, NULL);
-@@ -401,16 +423,18 @@
- 	fswritefd = -1;
- 	*blockDevice_fdPtr = -1;
- 	*canWritePtr = 0;
--	
-+
- 	if (stat(dev, &statb) < 0) {
- 		printf("Can't stat %s: %s\n", dev, strerror(errno));
+@@ -428,11 +452,13 @@
+ 		plog("Can't stat %s: %s\n", dev, strerror(errno));
  		return (0);
  	}
 +#if !LINUX
@@ -607,19 +563,10 @@ Description:
  	}
 +#endif
  	if ((fsreadfd = open(dev, O_RDONLY)) < 0) {
- 		printf("Can't open %s: %s\n", dev, strerror(errno));
+ 		plog("Can't open %s: %s\n", dev, strerror(errno));
  		return (0);
-@@ -419,7 +443,7 @@
- 	/* attempt to get write access to the block device and if not check if volume is */
- 	/* mounted read-only.  */
- 	getWriteAccess( dev, blockDevice_fdPtr, canWritePtr );
--	
-+
- 	if (preen == 0 && !guiControl)
- 		printf("** %s", dev);
- 	if (nflag || (fswritefd = open(dev, O_WRONLY)) < 0) {
-@@ -433,10 +457,14 @@
- 		printf("\n");
+@@ -455,10 +481,14 @@
+ 		plog("\n");
  
  	/* Get device block size to initialize cache */
 +#if LINUX
@@ -633,7 +580,7 @@ Description:
  
  	 /* calculate the cache block size and total blocks */
  	if (CalculateCacheSize(userCacheSize, &cacheBlockSize, &cacheTotalBlocks, debug) != 0) {
-@@ -463,11 +491,15 @@
+@@ -485,11 +515,15 @@
  
  static void getWriteAccess( char *dev, int *blockDevice_fdPtr, int *canWritePtr )
  {
@@ -649,7 +596,7 @@ Description:
  	void *				myNamePtr;
  
  	myPtr = NULL;
-@@ -490,6 +522,9 @@
+@@ -512,6 +546,9 @@
  	}
  	
  	// get count of mounts then get the info for each 
@@ -659,7 +606,7 @@ Description:
  	myMountsCount = getfsstat( NULL, 0, MNT_NOWAIT );
  	if ( myMountsCount < 0 )
  		goto ExitThisRoutine;
-@@ -513,8 +548,8 @@
+@@ -535,8 +572,8 @@
  		}
  		myBufPtr++;
  	}
@@ -672,22 +619,22 @@ Description:
  		free( myPtr );
 --- a/fsck_hfs.tproj/utilities.c
 +++ b/fsck_hfs.tproj/utilities.c
-@@ -183,12 +183,14 @@
- 			printf("Can't stat %s\n", raw);
+@@ -186,12 +186,14 @@
+ 		plog("Can't stat %s\n", raw);
  			return (origname);
  		}
 +#if !LINUX
  		if ((stchar.st_mode & S_IFMT) == S_IFCHR) {
  			return (raw);
  		} else {
- 			printf("%s is not a character device\n", raw);
+ 		plog("%s is not a character device\n", raw);
  			return (origname);
  		}
 +#endif
  	} else if ((stblock.st_mode & S_IFMT) == S_IFCHR && !retried) {
  		newname = unrawname(newname);
  		retried++;
-@@ -214,7 +216,11 @@
+@@ -217,7 +219,11 @@
  	*dp = 0;
  	(void)strcpy(rawbuf, name);
  	*dp = '/';
@@ -702,7 +649,7 @@ Description:
  	return (rawbuf);
 --- /dev/null
 +++ b/include/missing.h
-@@ -0,0 +1,115 @@
+@@ -0,0 +1,119 @@
 +#ifndef _MISSING_H_
 +#define _MISSING_H_
 +
@@ -711,7 +658,6 @@ Description:
 +#include <errno.h>
 +#include <stdint.h>
 +#include <string.h>
-+#include <bsd/string.h>
 +
 +#define MAXBSIZE		(256 * 4096)
 +
@@ -815,24 +761,33 @@ Description:
 +#endif
 +#endif
 +
++/* dirty workaround for BSD's strlcpy (missing from glibc) */
++#ifndef strlcpy
++#define strlcpy(t, s, size) { strncpy(t, s, (size)-1); t[(size)-1] = '\0'; }
++#endif
++
 +#define KAUTH_FILESEC_XATTR "com.apple.system.Security"
 +
 +#endif
 --- a/newfs_hfs.tproj/hfs_endian.c
 +++ b/newfs_hfs.tproj/hfs_endian.c
-@@ -30,7 +30,12 @@
+@@ -30,9 +30,15 @@
  #include <sys/types.h>
  #include <sys/stat.h>
+ 
+-#include <architecture/byte_order.h>
+ #include <hfs/hfs_format.h>
  
 +#if LINUX
 +#include "missing.h"
 +#else
- #include <architecture/byte_order.h>
++#include <architecture/byte_order.h>
++
 +#endif
 +
- #include <hfs/hfs_format.h>
- 
  #include "hfs_endian.h"
+ 
+ #undef ENDIAN_DEBUG
 --- a/newfs_hfs.tproj/hfs_endian.h
 +++ b/newfs_hfs.tproj/hfs_endian.h
 @@ -29,7 +29,12 @@
@@ -867,23 +822,28 @@ Description:
  
  #include <err.h>
  #include <errno.h>
-@@ -47,13 +53,14 @@
+@@ -45,6 +51,8 @@
+ #include <string.h>
+ #include <unistd.h>
  
- #include <openssl/sha.h>
- 
++#include <openssl/sha.h>
 +#if !LINUX
- #include <architecture/byte_order.h>
- 
- #include <CoreFoundation/CFString.h>
- #include <CoreFoundation/CFStringEncodingExt.h>
+ /*
+  * CommonCrypto is meant to be a more stable API than OpenSSL.
+  * Defining COMMON_DIGEST_FOR_OPENSSL gives API-compatibility
+@@ -62,10 +70,10 @@
  
  extern Boolean _CFStringGetFileSystemRepresentation(CFStringRef string, UInt8 *buffer, CFIndex maxBufLen);
--
-+#endif
  
+-
  #include <hfs/hfs_format.h>
  #include <hfs/hfs_mount.h>
-@@ -129,7 +136,9 @@
+ #include "hfs_endian.h"
++#endif
+ 
+ #include "newfs_hfs.h"
+ #include "readme.h"
+@@ -135,7 +143,9 @@
  static void MarkBitInAllocationBuffer __P((HFSPlusVolumeHeader *header,
  		UInt32 allocationBlock, void* sectorBuffer, UInt32 *sector));
  
@@ -893,24 +853,17 @@ Description:
  
  static UInt32 UTCToLocal __P((UInt32 utcTime));
  
-@@ -158,11 +167,14 @@
+@@ -164,6 +174,9 @@
  
  #define ROUNDUP(x, u)	(((x) % (u) == 0) ? (x) : ((x)/(u) + 1) * (u))
  
--#define ENCODING_TO_BIT(e)                               \
 +#if LINUX
 +#define ENCODING_TO_BIT(e)       (e)
-+#else
-+#define ENCODING_TO_BIT(e)
-           ((e) < 48 ? (e) :                              \
-           ((e) == kCFStringEncodingMacUkrainian ? 48 :   \
-           ((e) == kCFStringEncodingMacFarsi ? 49 : 0)))
--
 +#endif
- /*
-  * make_hfs
-  *	
-@@ -528,6 +540,7 @@
+ #if TARGET_OS_EMBEDDED
+ #define ENCODING_TO_BIT(e)				 \
+ 	  ((e) < 48 ? (e) : 0)
+@@ -539,6 +552,7 @@
  	 * Map UTF-8 input into a Mac encoding.
  	 * On conversion errors "untitled" is used as a fallback.
  	 */
@@ -918,7 +871,7 @@ Description:
  	{
  		UniChar unibuf[kHFSMaxVolumeNameChars];
  		CFStringRef cfstr;
-@@ -553,7 +566,11 @@
+@@ -564,7 +578,11 @@
  		bcopy(&mdbp->drVN[1], defaults->volumeName, mdbp->drVN[0]);
  		defaults->volumeName[mdbp->drVN[0]] = '\0';
  	}
@@ -930,7 +883,7 @@ Description:
  	mdbp->drFndrInfo[4] = SET_HFS_TEXT_ENCODING(defaults->encodingHint);
  
  	mdbp->drWrCnt = kWriteSeqNum;
-@@ -1100,9 +1117,11 @@
+@@ -1111,9 +1129,11 @@
  	UInt16					nodeSize;
  	SInt16					offset;
  	UInt32					unicodeBytes;
@@ -942,7 +895,7 @@ Description:
  	int index = 0;
  
  	nodeSize = dp->catalogNodeSize;
-@@ -1122,7 +1141,9 @@
+@@ -1133,7 +1153,9 @@
  	 * First record is always the root directory...
  	 */
  	ckp = (HFSPlusCatalogKey *)((UInt8 *)buffer + offset);
@@ -953,7 +906,7 @@ Description:
  	/* Use CFString functions to get a HFSPlus Canonical name */
  	cfstr = CFStringCreateWithCString(kCFAllocatorDefault, (char *)dp->volumeName, kCFStringEncodingUTF8);
  	cfOK = _CFStringGetFileSystemRepresentation(cfstr, canonicalName, sizeof(canonicalName));
-@@ -1139,6 +1160,7 @@
+@@ -1150,6 +1172,7 @@
  		      dp->volumeName, kDefaultVolumeNameStr);
  	}
  	CFRelease(cfstr);
@@ -961,26 +914,7 @@ Description:
  	ckp->nodeName.length = SWAP_BE16 (ckp->nodeName.length);
  
  	unicodeBytes = sizeof(UniChar) * SWAP_BE16 (ckp->nodeName.length);
-@@ -1821,15 +1843,15 @@
- 	off_t sector;
- 
- 	if ((byteCount % driveInfo->sectorSize) != 0)
--		errx(1, "WriteBuffer: byte count %ld is not sector size multiple", byteCount);
-+		errx(1, "WriteBuffer: byte count %i is not sector size multiple", byteCount);
- 
- 	sector = driveInfo->sectorOffset + startingSector;
- 
- 	if (lseek(driveInfo->fd, sector * driveInfo->sectorSize, SEEK_SET) < 0)
--		err(1, "seek (sector %qd)", sector);
-+		err(1, "seek (sector %lld)", sector);
- 
- 	if (write(driveInfo->fd, buffer, byteCount) != byteCount)
--		err(1, "write (sector %qd, %ld bytes)", sector, byteCount);
-+		err(1, "write (sector %lld, %i bytes)", sector, byteCount);
- }
- 
- 
-@@ -1913,7 +1935,7 @@
+@@ -1975,7 +1998,7 @@
  	return quotient;
  }
  
@@ -989,7 +923,7 @@ Description:
  #define __kCFUserEncodingFileName ("/.CFUserTextEncoding")
  
  static UInt32
-@@ -1939,7 +1961,7 @@
+@@ -2001,7 +2024,7 @@
      }
      return 0;
  }
@@ -998,7 +932,7 @@ Description:
  
  static int
  ConvertUTF8toUnicode(const UInt8* source, UInt32 bufsize, UniChar* unibuf,
-@@ -2006,6 +2028,9 @@
+@@ -2068,6 +2091,9 @@
  static int
  getencodinghint(unsigned char *name)
  {
@@ -1008,7 +942,7 @@ Description:
          int mib[3];
          size_t buflen = sizeof(int);
          struct vfsconf vfc;
-@@ -2023,7 +2048,8 @@
+@@ -2085,7 +2111,8 @@
  	return (hint);
  error:
  	hint = GetDefaultEncoding();
@@ -1018,7 +952,7 @@ Description:
  }
  
  
-@@ -2034,12 +2060,14 @@
+@@ -2096,12 +2123,14 @@
  	unsigned char digest[20];
  	time_t now;
  	clock_t uptime;
@@ -1036,7 +970,7 @@ Description:
  	
  	do {
  		/* Initialize the SHA-1 context for processing: */
-@@ -2052,52 +2080,58 @@
+@@ -2114,52 +2143,58 @@
  		SHA1_Update(&context, &uptime, sizeof(uptime));
  		
  		/* The kernel's boot time: */
@@ -1127,7 +1061,7 @@ Description:
  char	blkdevice[MAXPATHLEN];
  UInt32	gBlockSize = 0;
  UInt32	gNextCNID = kHFSFirstUserCatalogNodeID;
-@@ -158,8 +165,10 @@
+@@ -157,8 +164,10 @@
  	extern int optind;
  	int ch;
  	int forceHFS;
@@ -1138,27 +1072,9 @@ Description:
  	int n;
  	
  	if ((progname = strrchr(*argv, '/')))
-@@ -260,16 +269,19 @@
+@@ -274,6 +283,9 @@
+ 		if (argc != 1)
  			usage();
- 		}
- 
--	argc -= optind;
--	argv += optind;
-+		argc -= optind;
-+		argv += optind;
- 
--	if (gPartitionSize != 0) {
--		if (argc != 0)
--			usage();
--	} else {
--		if (argc != 1)
--			usage();
-+		if (gPartitionSize != 0) {
-+			if (argc != 0)
-+				usage();
-+		} else {
-+			if (argc != 1)
-+				usage();
  
 +#if LINUX
 +		(void) sprintf(blkdevice, "%s", argv[0]);
@@ -1166,15 +1082,15 @@ Description:
  		special = argv[0];
  		cp = strrchr(special, '/');
  		if (cp != 0)
-@@ -278,6 +290,7 @@
+@@ -282,6 +294,7 @@
  			special++;
- 		(void) sprintf(rawdevice, "%sr%s", _PATH_DEV, special);
- 		(void) sprintf(blkdevice, "%s%s", _PATH_DEV, special);
+ 		(void) snprintf(rawdevice, sizeof(rawdevice), "%sr%s", _PATH_DEV, special);
+ 		(void) snprintf(blkdevice, sizeof(blkdevice), "%s%s", _PATH_DEV, special);
 +#endif
  	}
  
  	if (forceHFS && gJournaled) {
-@@ -301,6 +314,9 @@
+@@ -305,6 +318,9 @@
  		/*
  		 * Check if target device is aready mounted
  		 */
@@ -1184,41 +1100,27 @@ Description:
  		n = getmntinfo(&mp, MNT_NOWAIT);
  		if (n == 0)
  			fatal("%s: getmntinfo: %s", blkdevice, strerror(errno));
-@@ -310,15 +326,20 @@
+@@ -314,6 +330,7 @@
  				fatal("%s is mounted on %s", blkdevice, mp->f_mntonname);
  			++mp;
  		}
 +#endif
  	}
  
--	if (hfs_newfs(rawdevice, forceHFS, true) < 0) {
-+	if (hfs_newfs(blkdevice, forceHFS, true) < 0) {
-+#if LINUX
-+		err(1, NULL);
-+#else
- 		/* On ENXIO error use the block device (to get de-blocking) */
- 		if (errno == ENXIO) {
- 			if (hfs_newfs(blkdevice, forceHFS, false) < 0)
- 				err(1, NULL);
- 		} else
- 			err(1, NULL);
-+#endif
- 	}
- 
- 	exit(0);
-@@ -506,7 +527,9 @@
+ 	if (hfs_newfs(rawdevice, forceHFS) < 0) {
+@@ -505,7 +522,9 @@
  	int fso = 0;
  	int retval = 0;
  	hfsparams_t defaults = {0};
 +#if !LINUX
- 	u_int64_t maxSectorsPerIO;
+ 	UInt64 maxPhysSectorsPerIO;
 +#endif
+ 	UInt64 physSectorsPerRead;
+ 	UInt64 physSectorsPerWrite;
  
- 	if (gPartitionSize) {
- 			dip.sectorSize = kBytesPerSector;
-@@ -526,6 +549,34 @@
- 	
- 		if (fstat( fso, &stbuf) < 0)
+@@ -524,6 +543,34 @@
+ 
+ 		if (fso < 0)
  			fatal("%s: %s", device, strerror(errno));
 +#if LINUX
 +		dip.sectorSize = 512;
@@ -1248,34 +1150,17 @@ Description:
 +		else
 +			fatal("%s: is not a block device", device);
 +#else
- 	
- 		if (ioctl(fso, DKIOCGETBLOCKCOUNT, &dip.totalSectors) < 0)
+ 
+ 		if (fstat( fso, &stbuf) < 0)
  			fatal("%s: %s", device, strerror(errno));
-@@ -537,11 +588,14 @@
- 			dip.sectorsPerIO = (128 * 1024) / dip.sectorSize;  /* use 128K as default */
- 		else
- 			dip.sectorsPerIO = MIN(maxSectorsPerIO, (1024 * 1024) / dip.sectorSize);
+@@ -553,6 +600,7 @@
+ 
+ 	dip.sectorSize = kBytesPerSector;
+ 	dip.totalSectors = dip.physTotalSectors * dip.physSectorSize / dip.sectorSize;
 +#endif
-+
- 		/*
- 		 * The make_hfs code currentlydoes 512 byte sized I/O.
- 		 * If the sector size is bigger than 512, start over
- 		 * using the block device (to get de-blocking).
- 		 */       
-+#if !LINUX
- 		if (dip.sectorSize != kBytesPerSector) {
- 			if (isRaw) {
- 				close(fso);
-@@ -556,7 +610,9 @@
- 				dip.sectorSize = kBytesPerSector;
- 			}
- 		}
-+#endif
- 	}
-+
+ 
  	dip.sectorOffset = 0;
  	time(&createtime);
- 
 --- a/newfs_hfs.tproj/newfs_hfs.h
 +++ b/newfs_hfs.tproj/newfs_hfs.h
 @@ -19,8 +19,12 @@
