@@ -619,7 +619,18 @@ Description:
  		free( myPtr );
 --- a/fsck_hfs.tproj/utilities.c
 +++ b/fsck_hfs.tproj/utilities.c
-@@ -186,12 +186,14 @@
+@@ -57,8 +57,9 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/errno.h>
+-#include <sys/syslimits.h>
++#include <limits.h>
+ #include <pwd.h>
++#include <signal.h>
+ 
+ #include <ctype.h>
+ #include <err.h>
+@@ -186,12 +187,14 @@
  		plog("Can't stat %s\n", raw);
  			return (origname);
  		}
@@ -634,7 +645,7 @@ Description:
  	} else if ((stblock.st_mode & S_IFMT) == S_IFCHR && !retried) {
  		newname = unrawname(newname);
  		retried++;
-@@ -217,7 +219,11 @@
+@@ -217,7 +220,11 @@
  	*dp = 0;
  	(void)strcpy(rawbuf, name);
  	*dp = '/';
@@ -647,6 +658,22 @@ Description:
  	(void)strcat(rawbuf, &dp[1]);
  
  	return (rawbuf);
+@@ -562,11 +569,13 @@
+ {
+     int ret;
+     size_t size_remaining;
+-    va_list ap=NULL;
++    va_list ap;
+     char *str=NULL;
+ 
++    va_copy(ap, NULL);
++
+     if (type == DO_VPRINT) {
+-	ap = (va_list)arg;
++	va_copy(ap, arg);
+     } else if (type == DO_STR) {
+ 	str = (char *)arg;
+     }
 --- /dev/null
 +++ b/include/missing.h
 @@ -0,0 +1,119 @@
@@ -1221,3 +1248,14 @@ Description:
  
  
  
+--- a/fsck_hfs.tproj/fsck_hfs.h
++++ b/fsck_hfs.tproj/fsck_hfs.h
+@@ -23,7 +23,7 @@
+  */
+ 
+ #include "cache.h"
+-
++#include <stdarg.h>
+ 
+ const extern char	*cdevname;		/* name of device being checked */
+ extern char	*progname;
