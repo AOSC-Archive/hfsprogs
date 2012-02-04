@@ -5,8 +5,8 @@ DM-Upload-Allowed: yes
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Homepage: http://www.opensource.apple.com/darwinsource/10.4/
 Build-Depends:
- debhelper (>= 8),
- hardening-wrapper,
+ debhelper (>= 8.9.4),
+ dpkg-dev (>= 1.16.1),
  libbsd-dev,
  libssl-dev
 Standards-Version: 3.8.3
