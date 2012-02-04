@@ -1,4 +1,8 @@
+*.a
 *.log
 *.o
 *~
 .pc
+debian/*.substvars
+debian/files
+debian/hfsprogs
