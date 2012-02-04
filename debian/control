@@ -4,12 +4,18 @@ Priority: optional
 DM-Upload-Allowed: yes
 Maintainer: Rogério Brito <rbrito@ime.usp.br>
 Homepage: http://www.opensource.apple.com/darwinsource/10.4/
-Build-Depends: debhelper (>= 8), libssl-dev, libbsd-dev, hardening-wrapper
+Build-Depends:
+ debhelper (>= 8),
+ hardening-wrapper,
+ libbsd-dev,
+ libssl-dev
 Standards-Version: 3.8.3
 
 Package: hfsprogs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends:
+ ${misc:Depends},
+ ${shlibs:Depends}
 Description: mkfs and fsck for HFS and HFS+ file systems
  The HFS+ file system used by Apple Computer for their Mac OS is
  supported by the Linux kernel.  Apple provides mkfs and fsck for
