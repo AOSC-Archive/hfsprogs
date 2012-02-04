@@ -10,3 +10,4 @@
 90-fix_manpage_typos.patch
 90-rename_dprintf.patch
 92-fix-types.patch
+hfsplus-tools-332.14-fix-uuid.patch
