@@ -12,3 +12,4 @@
 90-rename_dprintf.patch
 91-remove-nils.patch
 92-fix-types.patch
+hfsplus-tools-332.14-fix-uuid.patch
