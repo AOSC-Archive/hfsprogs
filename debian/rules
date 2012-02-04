@@ -10,47 +10,21 @@ docdir=$(tmpdir)/usr/share/doc/$(package)
 mansec=8
 mandir=$(tmpdir)/usr/share/man/man$(mansec)
 
-export DEB_BUILD_HARDENING=1
-
-CFLAGS += -Wall -Wextra -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -Os
-endif
-
 CFLAGS += -DDEBUG_BUILD=0 -D_FILE_OFFSET_BITS=64 -D LINUX=1 -D BSD=1 -I$(CURDIR)/include
 LDFLAGS += -Wl,--as-needed
 
-############################################################
-# The targets
+%:
+	dh $@
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-
-	touch configure-stamp
-
-build: build-stamp
-
-build-stamp: configure-stamp 
-	dh_testdir
-
+override_dh_auto_build:
 	$(MAKE) -f Makefile.lnx CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)"
 
-	touch $@
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-
+override_dh_auto_clean:
 	rm -f newfs_hfs.tproj/*.o  fsck_hfs.tproj/*.o fsck_hfs.tproj/dfalib/*.o
 	rm -f newfs_hfs.tproj/newfs_hfs fsck_hfs.tproj/fsck_hfs fsck_hfs.tproj/dfalib/libdfa.a
 	dh_clean
 
-install: build
+override_dh_auto_install:
 	dh_testdir
 	dh_testroot
 	dh_clean -k 
@@ -61,26 +35,3 @@ install: build
 	install -m 755 fsck_hfs.tproj/fsck_hfs     $(tmpdir)/sbin/fsck.hfsplus
 	install -m 644 newfs_hfs.tproj/newfs_hfs.8 $(mandir)/mkfs.hfsplus.8
 	install -m 644 fsck_hfs.tproj/fsck_hfs.8   $(mandir)/fsck.hfsplus.8
-
-# Build architecture-independent files here.
-binary-indep: build install
-
-# Build architecture-dependent files here.
-binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs
-	dh_installdocs
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
