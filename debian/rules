@@ -27,7 +27,7 @@ override_dh_auto_clean:
 override_dh_auto_install:
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_prep
 	dh_installdirs
 
 	install -m 644 newfs_hfs.tproj/hfsbootdata.img $(shrdir)/hfsbootdata
