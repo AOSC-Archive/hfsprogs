@@ -1,3 +1,18 @@
+hfsprogs (332.25-9) unstable; urgency=low
+
+  * gitignore: Add some files to the ignore list.
+  * debian: First steps toward making the build rules saner.
+  * debian: Simple run of `wrap-and-sort -sav` for legibility.
+  * gitignore: Add other files to the ignore list.
+  * debian: Use the new dpkg-dev/debhelper provided hardening.
+  * debian/patches: Add patch from Matthew Garrett to fix UUID creation.
+    Thanks to Matthew Garrett for the patch and Lars Noodén for reporting
+    (LP: 737002)
+  * gitignore: Add more files to ignore.
+  * debian/rules: Change from `dh_clean -k` to `dh_prep`.
+
+ -- Rogério Brito <rbrito@ime.usp.br>  Sat, 04 Feb 2012 12:37:19 -0200
+
 hfsprogs (332.25-8) unstable; urgency=low
 
   * Use a FTBFS bug revealed by the kfreebsd-* ports.
