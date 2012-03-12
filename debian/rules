@@ -1,8 +1,6 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
-############################################################
-# Initial setup
 package=hfsprogs
 tmpdir=debian/$(package)
 shrdir=$(tmpdir)/usr/share/$(package)
