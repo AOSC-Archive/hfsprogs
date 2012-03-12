@@ -1,22 +1,21 @@
-hfsprogs (332.25-10~2.gbp583d0f) UNRELEASED; urgency=low
+hfsprogs (332.25-10) unstable; urgency=low
 
-  ** SNAPSHOT build @583d0f80b94d811dbb7648fbe63b22f36b663195 **
-
+  * debian/compat:
+    + Set to 9 to gain the hardening flags for compilation.
   * debian/control:
     + Simple run of `wrap-and-sort -sav` for legibility.
     + Update Standards-Version to 3.9.3, with no further changes.
+    + B-D on debhelper >= 9 and drop versioned B-D on dpkg-dev.
   * debian/rules:
     + First steps toward making the build rules saner with dh.
     + Change from `dh_clean -k` to `dh_prep`.
     + Make declarative use of `dh_auto_clean`.
-  * debian/compat:
-    + Set to 9 to gain the hardening flags for compilation.
   * debian/patches:
     + Add patch from Matthew Garrett to fix UUID creation. Thanks to
-      Matthew Garrett for the patch and Lars Noodén for reporting
+      Matthew Garrett for the patch and Lars Noodén for reporting.
       (LP:737002)
 
- -- Rogério Brito <rbrito@ime.usp.br>  Mon, 12 Mar 2012 08:00:34 -0300
+ -- Rogério Brito <rbrito@ime.usp.br>  Mon, 12 Mar 2012 08:16:11 -0300
 
 hfsprogs (332.25-9) unstable; urgency=low
 
