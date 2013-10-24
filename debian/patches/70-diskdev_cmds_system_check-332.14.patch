@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Create a new command line option (-a) for the fsck.hfsplus that has the same
-  behavior that the -p option has, for greater compatibility with other tools.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Provide command line option -a
+
+Create a new command line option (-a) for the fsck.hfsplus that has the same
+behavior that the -p option has, for greater compatibility with other tools.
 --- a/fsck_hfs.tproj/fsck_hfs.c
 +++ b/fsck_hfs.tproj/fsck_hfs.c
 @@ -104,7 +104,7 @@

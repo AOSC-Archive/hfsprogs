@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Try to address the issues of a given integral type having different sizes
-  in 32 and 64-bit architectures.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Adjust types for printing
+
+Try to address the issues of a given integral type having different sizes
+in 32 and 64-bit architectures.
 --- a/fsck_hfs.tproj/dfalib/SControl.c
 +++ b/fsck_hfs.tproj/dfalib/SControl.c
 @@ -776,7 +776,7 @@

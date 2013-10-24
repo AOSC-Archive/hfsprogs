@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Remove reference in the "See also" section of the manpage to a command that
-  is not available in Debian systems (and, quite probably, other systems too).
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Remove see also for pdisk
+
+Remove reference in the "See also" section of the manpage to a command that
+is not available in Debian systems (and, quite probably, other systems too).
 --- a/newfs_hfs.tproj/newfs_hfs.8
 +++ b/newfs_hfs.tproj/newfs_hfs.8
 @@ -139,8 +139,7 @@

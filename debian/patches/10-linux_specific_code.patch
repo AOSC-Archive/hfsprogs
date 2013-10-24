@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Modify some of the files so that they can be compiled without the
-  Apple owned frameworks in a Debian system (and possibly others).
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Add/exclude Darwin-specific code
+
+Modify some of the files so that they can be compiled without the
+Apple owned frameworks in a Debian system (and possibly others).
 --- a/fsck_hfs.tproj/cache.c
 +++ b/fsck_hfs.tproj/cache.c
 @@ -26,7 +26,11 @@

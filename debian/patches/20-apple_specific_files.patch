@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Add some include files from an Apple system that contain the definition of
-  the data structures used by the programs that manipulate the filesystems.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Add helper include files absent from the upstream package
+
+Add some include files from an Apple system that contain the definition of
+the data structures used by the programs that manipulate the filesystems.
 --- /dev/null
 +++ b/include/bitstring.h
 @@ -0,0 +1,164 @@

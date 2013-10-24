@@ -1,7 +1,8 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Fix the installation of the HFS wrapper block to be compliant in Linux
-  systems (since it is arch independent).
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Fix path for HFS wrapper block
+
+Fix the installation of the HFS wrapper block to be compliant in Linux
+systems (since it is arch independent).
 --- a/newfs_hfs.tproj/makehfs.c
 +++ b/newfs_hfs.tproj/makehfs.c
 @@ -70,7 +70,7 @@

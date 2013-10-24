@@ -1,15 +1,18 @@
-Author: "A. Costa" <agcosta@gis.net>
-Author: Rogério Theodoro de Brito <rbrito@ime.usp.br>
-Author: Christoph Hellwig <hch@lst.de>
+From: Rogério Theodoro de Brito <rbrito@ime.usp.br>
+Date: 2010-11-25
+Subject: Fix manpages
+
+Remove typos, references in the "See also" sections of the manpages to
+commands that are not available in Debian systems (and, quite probably,
+other systems too) and non-Linux specific comments.
+
+Authored also by Christoph Hellwig <hch@lst.de> and  "A. Costa" <agcosta@gis.net>
+
 Bug-Debian: http://bugs.debian.org/598714
 Bug-Debian: http://bugs.debian.org/575201
-Reviewed-by: Rogério Theodoro de Brito <rbrito@ime.usp.br>
-Last-Update: 2010-11-25
 Forwarded: no
-Description:
-  Remove typos, references in the "See also" sections of the manpages to
-  commands that are not available in Debian systems (and, quite probably,
-  other systems too) and non-Linux specific comments.
+Reviewed-by: Rogério Theodoro de Brito <rbrito@ime.usp.br>
+
 --- a/newfs_hfs.tproj/newfs_hfs.8
 +++ b/newfs_hfs.tproj/newfs_hfs.8
 @@ -19,10 +19,10 @@

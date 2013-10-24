@@ -1,3 +1,5 @@
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Fix compilation on 64-bit arches
 --- a/fsck_hfs.tproj/dfalib/SControl.c
 +++ b/fsck_hfs.tproj/dfalib/SControl.c
 @@ -1034,7 +1034,7 @@

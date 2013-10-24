@@ -1,7 +1,8 @@
-Author: RogÃ©rio Brito <rbrito@ime.usp.br>
-Description:
-  Modify the way that debug messages are sent to the user, by eliminating one
-  character of them.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Remove (Apple-specific?) \p from strings
+
+Modify the way that debug messages are sent to the user, by eliminating one
+character of them.
 --- a/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
 +++ b/fsck_hfs.tproj/dfalib/BTreeTreeOps.c
 @@ -223,7 +223,7 @@

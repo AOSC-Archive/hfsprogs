@@ -1,6 +1,6 @@
 Subject: Fix spelling in manpages
-Author: "A. Costa" <agcosta@gis.net>
-Last-Update: 2009-10-25
+From: "A. Costa" <agcosta@gis.net>
+Date: 2009-10-25
 --- a/fsck_hfs.tproj/fsck_hfs.8
 +++ b/fsck_hfs.tproj/fsck_hfs.8
 @@ -107,7 +107,7 @@

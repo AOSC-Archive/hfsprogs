@@ -1,8 +1,12 @@
-Author: Matthew Garrett <mjg59@codon.org.uk>
-Description:
- Fix mkfs not creating UUIDs for new filesystems. Thanks to Lars Noodén
- for reporting the bug at <https://bugs.launchpad.net/bugs/737002>.
- This closes LP: #737002.
+From: Matthew Garrett <mjg59@codon.org.uk>
+Subject: Fix mkfs not creating UUIDs for new filesystems.
+
+Fix mkfs not creating UUIDs for new filesystems.
+
+Thanks to Lars Noodén for reporting the bug at
+ <https://bugs.launchpad.net/bugs/737002>.
+
+This closes LP: #737002.
 --- a/include/missing.h
 +++ b/include/missing.h
 @@ -72,7 +72,7 @@

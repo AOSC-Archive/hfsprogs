@@ -1,3 +1,5 @@
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Rename custom macro nil with NULL
 --- a/fsck_hfs.tproj/dfalib/SUtils.c
 +++ b/fsck_hfs.tproj/dfalib/SUtils.c
 @@ -395,11 +395,11 @@

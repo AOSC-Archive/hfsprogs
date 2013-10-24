@@ -1,8 +1,9 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
- Create short Makefiles for compiling just the necessary parts for a
- Debian-based (and possibly other distributions) HFS+ filesystem
- utilities.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Create short Makefiles for Debian
+
+Create short Makefiles for compiling just the necessary parts for a
+Debian-based (and possibly other distributions) HFS+ filesystem
+utilities.
 --- /dev/null
 +++ b/Makefile.lnx
 @@ -0,0 +1,8 @@

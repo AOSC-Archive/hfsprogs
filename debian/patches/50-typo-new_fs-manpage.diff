@@ -1,6 +1,5 @@
-Author: Rogério Brito <rbrito@ime.usp.br>
-Description:
-  Eliminate warnings from man/troff.
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Eliminate warnings from man/troff.
 --- a/newfs_hfs.tproj/newfs_hfs.8
 +++ b/newfs_hfs.tproj/newfs_hfs.8
 @@ -93,7 +93,7 @@

@@ -1,3 +1,5 @@
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Fix types
 --- a/fsck_hfs.tproj/cache.c
 +++ b/fsck_hfs.tproj/cache.c
 @@ -961,20 +961,21 @@

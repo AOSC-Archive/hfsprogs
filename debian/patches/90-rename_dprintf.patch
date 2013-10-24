@@ -1,3 +1,5 @@
+From: Rogério Brito <rbrito@ime.usp.br>
+Subject: Rename dprintf to dbg_printf
 --- a/fsck_hfs.tproj/dfalib/SVerify1.c
 +++ b/fsck_hfs.tproj/dfalib/SVerify1.c
 @@ -2157,9 +2157,9 @@
