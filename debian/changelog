@@ -1,6 +1,4 @@
-hfsprogs (332.25-11~2.gbp7fc73c) UNRELEASED; urgency=low
-
-  ** SNAPSHOT build @7fc73c2cedc4992c42d3d352f0b4f03a78c18913 **
+hfsprogs (332.25-11) unstable; urgency=low
 
   * debian/control: Remove DMUA flag.
   * debian/rules: Override rules for which we don't have makefiles.
@@ -11,7 +9,7 @@ hfsprogs (332.25-11~2.gbp7fc73c) UNRELEASED; urgency=low
     + Coalesce all patches touching man pages into one.
     + Regenerate everything from patch-queue branch.
 
- -- Rogério Brito <rbrito@ime.usp.br>  Thu, 24 Oct 2013 00:50:50 -0200
+ -- Rogério Brito <rbrito@ime.usp.br>  Thu, 24 Oct 2013 01:20:15 -0200
 
 hfsprogs (332.25-10) unstable; urgency=low
 
