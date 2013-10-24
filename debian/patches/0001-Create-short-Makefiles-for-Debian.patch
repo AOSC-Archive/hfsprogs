@@ -1,9 +1,24 @@
-From: Rogério Brito <rbrito@ime.usp.br>
+From: =?UTF-8?q?Rog=C3=A9rio=20Brito?= <rbrito@ime.usp.br>
+Date: Thu, 24 Oct 2013 01:11:21 -0200
 Subject: Create short Makefiles for Debian
 
 Create short Makefiles for compiling just the necessary parts for a
 Debian-based (and possibly other distributions) HFS+ filesystem
 utilities.
+---
+ Makefile.lnx                       |  8 ++++++++
+ fsck_hfs.tproj/Makefile.lnx        | 16 ++++++++++++++++
+ fsck_hfs.tproj/dfalib/Makefile.lnx | 15 +++++++++++++++
+ newfs_hfs.tproj/Makefile.lnx       | 12 ++++++++++++
+ 4 files changed, 51 insertions(+)
+ create mode 100644 Makefile.lnx
+ create mode 100644 fsck_hfs.tproj/Makefile.lnx
+ create mode 100644 fsck_hfs.tproj/dfalib/Makefile.lnx
+ create mode 100644 newfs_hfs.tproj/Makefile.lnx
+
+diff --git a/Makefile.lnx b/Makefile.lnx
+new file mode 100644
+index 0000000..687d1e7
 --- /dev/null
 +++ b/Makefile.lnx
 @@ -0,0 +1,8 @@
@@ -15,6 +30,9 @@ utilities.
 +	for d in $(SUBDIRS); do $(MAKE) -C $$d -f Makefile.lnx $@; done
 +
 +export CC CFLAGS
+diff --git a/fsck_hfs.tproj/Makefile.lnx b/fsck_hfs.tproj/Makefile.lnx
+new file mode 100644
+index 0000000..977d7e8
 --- /dev/null
 +++ b/fsck_hfs.tproj/Makefile.lnx
 @@ -0,0 +1,16 @@
@@ -34,6 +52,9 @@ utilities.
 +	$(MAKE) -C dfalib -f Makefile.lnx clean
 +
 +.PHONY : FORCE clean
+diff --git a/fsck_hfs.tproj/dfalib/Makefile.lnx b/fsck_hfs.tproj/dfalib/Makefile.lnx
+new file mode 100644
+index 0000000..8c07196
 --- /dev/null
 +++ b/fsck_hfs.tproj/dfalib/Makefile.lnx
 @@ -0,0 +1,15 @@
@@ -52,6 +73,9 @@ utilities.
 +
 +clean:
 +	$(RM) $(OFILES) libdfa.a
+diff --git a/newfs_hfs.tproj/Makefile.lnx b/newfs_hfs.tproj/Makefile.lnx
+new file mode 100644
+index 0000000..58e6700
 --- /dev/null
 +++ b/newfs_hfs.tproj/Makefile.lnx
 @@ -0,0 +1,12 @@

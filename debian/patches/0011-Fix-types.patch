@@ -1,8 +1,16 @@
-From: Rogério Brito <rbrito@ime.usp.br>
+From: =?UTF-8?q?Rog=C3=A9rio=20Brito?= <rbrito@ime.usp.br>
+Date: Thu, 24 Oct 2013 01:11:22 -0200
 Subject: Fix types
+
+---
+ fsck_hfs.tproj/cache.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/fsck_hfs.tproj/cache.c b/fsck_hfs.tproj/cache.c
+index 527088a..540fa0b 100644
 --- a/fsck_hfs.tproj/cache.c
 +++ b/fsck_hfs.tproj/cache.c
-@@ -961,20 +961,21 @@
+@@ -961,20 +961,21 @@ int CacheLookup (Cache_t *cache, uint64_t off, Tag_t **tag)
   */
  int CacheRawRead (Cache_t *cache, uint64_t off, uint32_t len, void *buf)
  {
@@ -31,7 +39,7 @@ Subject: Fix types
  
  	/* Update counters */
  	cache->DiskRead++;
-@@ -989,21 +990,22 @@
+@@ -989,21 +990,22 @@ int CacheRawRead (Cache_t *cache, uint64_t off, uint32_t len, void *buf)
   */
  int CacheRawWrite (Cache_t *cache, uint64_t off, uint32_t len, void *buf)
  {

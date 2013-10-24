@@ -1,31 +1,19 @@
-From: Rogério Brito <rbrito@ime.usp.br>
+From: =?UTF-8?q?Rog=C3=A9rio=20Brito?= <rbrito@ime.usp.br>
+Date: Thu, 24 Oct 2013 01:11:21 -0200
 Subject: Rename dprintf to dbg_printf
---- a/fsck_hfs.tproj/dfalib/SVerify1.c
-+++ b/fsck_hfs.tproj/dfalib/SVerify1.c
-@@ -2157,9 +2157,9 @@
- 	
- 	if (doDelete == true) {
- 		result = DeleteBTreeRecord(GPtr->calculatedAttributesFCB, key);
--		dprintf (d_info|d_xattr, "%s: Deleting attribute %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
-+		dbg_printf (d_info|d_xattr, "%s: Deleting attribute %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
- 		if (result) {
--			dprintf (d_error|d_xattr, "%s: Error in deleting record for %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
-+			dbg_printf (d_error|d_xattr, "%s: Error in deleting record for %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
- 		}
- 		
- 		/* Set flags to mark header and map dirty */
-@@ -3034,7 +3034,7 @@
- 		//	checkout the extent record first
- 		err = ChkExtRec( GPtr, extents, &lastExtentIndex );
- 		if (err != noErr) {
--			dprintf (d_info, "%s: Bad extent for fileID %u in extent %u for startblock %u\n", __FUNCTION__, fileNumber, lastExtentIndex, blockCount);
-+			dbg_printf (d_info, "%s: Bad extent for fileID %u in extent %u for startblock %u\n", __FUNCTION__, fileNumber, lastExtentIndex, blockCount);
- 
- 			/* Stop verification if bad extent is found for system file or EA */
- 			if ((fileNumber < kHFSFirstUserCatalogNodeID) ||
+
+---
+ fsck_hfs.tproj/dfalib/SRepair.c  | 18 +++++++++---------
+ fsck_hfs.tproj/dfalib/SVerify1.c |  6 +++---
+ fsck_hfs.tproj/fsck_debug.c      | 10 +++++-----
+ fsck_hfs.tproj/fsck_debug.h      | 10 +++++-----
+ 4 files changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/fsck_hfs.tproj/dfalib/SRepair.c b/fsck_hfs.tproj/dfalib/SRepair.c
+index 8eb759c..89c12d6 100644
 --- a/fsck_hfs.tproj/dfalib/SRepair.c
 +++ b/fsck_hfs.tproj/dfalib/SRepair.c
-@@ -1825,13 +1825,13 @@
+@@ -1825,13 +1825,13 @@ static OSErr FixAttrSize(SGlobPtr GPtr, RepairOrderPtr p)
  	result = BTSearchRecord(GPtr->calculatedAttributesFCB, &iterator, 
  				kInvalidMRUCacheKey, &btRecord, &recSize, &iterator);
  	if (result) {
@@ -41,7 +29,7 @@ Subject: Rename dprintf to dbg_printf
  		result = btNotFound;
  		goto out;
  	}
-@@ -1862,7 +1862,7 @@
+@@ -1862,7 +1862,7 @@ static OSErr FixAttrSize(SGlobPtr GPtr, RepairOrderPtr p)
  		result = BTReplaceRecord(GPtr->calculatedAttributesFCB, &iterator,
  					&btRecord, recSize);
  		if (result) {
@@ -50,7 +38,7 @@ Subject: Rename dprintf to dbg_printf
  			goto out;
  		}
  	}
-@@ -2058,7 +2058,7 @@
+@@ -2058,7 +2058,7 @@ del_overflow_extents:
  
  		/* Delete the extent record */ 
  		err = DeleteBTreeRecord(GPtr->calculatedExtentsFCB, &extentKey);
@@ -59,7 +47,7 @@ Subject: Rename dprintf to dbg_printf
  		if (err) {
  			goto create_symlink;
  		}
-@@ -3227,12 +3227,12 @@
+@@ -3227,12 +3227,12 @@ static OSErr MoveExtent(SGlobPtr GPtr, ExtentInfo *extentInfo)
  											  &extentData, &recordSize, &foundExtentIndex);
  				foundLocation = extentsBTree;
  				if (err != noErr) {
@@ -74,7 +62,7 @@ Subject: Rename dprintf to dbg_printf
  				goto out;
  			}
  		}
-@@ -3241,7 +3241,7 @@
+@@ -3241,7 +3241,7 @@ static OSErr MoveExtent(SGlobPtr GPtr, ExtentInfo *extentInfo)
  	err = CopyDiskBlocks(GPtr, extentInfo->startBlock, extentInfo->blockCount, 
  						 extentInfo->newStartBlock);
  	if (err != noErr) {
@@ -83,7 +71,7 @@ Subject: Rename dprintf to dbg_printf
  		goto out;
  	}
  	
-@@ -3260,7 +3260,7 @@
+@@ -3260,7 +3260,7 @@ static OSErr MoveExtent(SGlobPtr GPtr, ExtentInfo *extentInfo)
  
  	}
  	if (err != noErr) {
@@ -92,7 +80,7 @@ Subject: Rename dprintf to dbg_printf
  		goto out;
  	}
  
-@@ -3491,7 +3491,7 @@
+@@ -3491,7 +3491,7 @@ static OSErr SearchExtentInAttributeBT(SGlobPtr GPtr, ExtentInfo *extentInfo,
  	result = BTSearchRecord(GPtr->calculatedAttributesFCB, &iterator, 
  				kInvalidMRUCacheKey, &btRecord, recordSize, &iterator);
  	if (result) {
@@ -101,6 +89,33 @@ Subject: Rename dprintf to dbg_printf
  		goto out;	
  	}
  	
+diff --git a/fsck_hfs.tproj/dfalib/SVerify1.c b/fsck_hfs.tproj/dfalib/SVerify1.c
+index a273bf3..39bda5c 100644
+--- a/fsck_hfs.tproj/dfalib/SVerify1.c
++++ b/fsck_hfs.tproj/dfalib/SVerify1.c
+@@ -2157,9 +2157,9 @@ CheckAttributeRecord(SGlobPtr GPtr, const HFSPlusAttrKey *key, const HFSPlusAttr
+ 	
+ 	if (doDelete == true) {
+ 		result = DeleteBTreeRecord(GPtr->calculatedAttributesFCB, key);
+-		dprintf (d_info|d_xattr, "%s: Deleting attribute %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
++		dbg_printf (d_info|d_xattr, "%s: Deleting attribute %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
+ 		if (result) {
+-			dprintf (d_error|d_xattr, "%s: Error in deleting record for %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
++			dbg_printf (d_error|d_xattr, "%s: Error in deleting record for %s for fileID %d, type = %d\n", __FUNCTION__, attrname, key->fileID, rec->recordType);
+ 		}
+ 		
+ 		/* Set flags to mark header and map dirty */
+@@ -3034,7 +3034,7 @@ OSErr	CheckFileExtents( SGlobPtr GPtr, UInt32 fileNumber, UInt8 forkType,
+ 		//	checkout the extent record first
+ 		err = ChkExtRec( GPtr, extents, &lastExtentIndex );
+ 		if (err != noErr) {
+-			dprintf (d_info, "%s: Bad extent for fileID %u in extent %u for startblock %u\n", __FUNCTION__, fileNumber, lastExtentIndex, blockCount);
++			dbg_printf (d_info, "%s: Bad extent for fileID %u in extent %u for startblock %u\n", __FUNCTION__, fileNumber, lastExtentIndex, blockCount);
+ 
+ 			/* Stop verification if bad extent is found for system file or EA */
+ 			if ((fileNumber < kHFSFirstUserCatalogNodeID) ||
+diff --git a/fsck_hfs.tproj/fsck_debug.c b/fsck_hfs.tproj/fsck_debug.c
+index 1be3fc5..77e8e51 100644
 --- a/fsck_hfs.tproj/fsck_debug.c
 +++ b/fsck_hfs.tproj/fsck_debug.c
 @@ -25,18 +25,18 @@
@@ -126,7 +141,7 @@ Subject: Rename dprintf to dbg_printf
   * debug message types.  Only the messages whose type have one or more similar
   * bits set in comparison with current global debug level are printed. 
   *
-@@ -56,7 +56,7 @@
+@@ -56,7 +56,7 @@ unsigned long cur_debug_level;
   * Output:
   *	Nothing
   */
@@ -135,9 +150,11 @@ Subject: Rename dprintf to dbg_printf
  {
  	if (cur_debug_level & type) {
  		va_list ap;
+diff --git a/fsck_hfs.tproj/fsck_debug.h b/fsck_hfs.tproj/fsck_debug.h
+index 81e3932..cb1b9be 100644
 --- a/fsck_hfs.tproj/fsck_debug.h
 +++ b/fsck_hfs.tproj/fsck_debug.h
-@@ -36,18 +36,18 @@
+@@ -36,18 +36,18 @@ enum debug_message_type {
  	d_overlap	=	0x0020 	/* Overlap extents related messages */
  };
  
@@ -160,7 +177,7 @@ Subject: Rename dprintf to dbg_printf
   * debug message types.  Only the messages whose type have one or more similar
   * bits set in comparison with current global debug level are printed. 
   *
-@@ -67,6 +67,6 @@
+@@ -67,6 +67,6 @@ extern unsigned long cur_debug_level;
   * Output:
   *	Nothing
   */
