@@ -1,11 +1,15 @@
-hfsprogs (332.25-11~1.gbp21b92b) UNRELEASED; urgency=low
+hfsprogs (332.25-11~2.gbp7fc73c) UNRELEASED; urgency=low
 
-  ** SNAPSHOT build @21b92b76405023609694aceac8ec3a1a16f49e1a **
+  ** SNAPSHOT build @7fc73c2cedc4992c42d3d352f0b4f03a78c18913 **
 
-  * debian/patches: Change the headers to be friendlier with gbp pq.
   * debian/control: Remove DMUA flag.
   * debian/rules: Override rules for which we don't have makefiles.
     (Closes: #724195)
+  * debian/patches:
+    + Change the headers to be friendlier with gbp pq.
+    + Remove unreferenced patches in series file.
+    + Coalesce all patches touching man pages into one.
+    + Regenerate everything from patch-queue branch.
 
  -- Rogério Brito <rbrito@ime.usp.br>  Thu, 24 Oct 2013 00:50:50 -0200
 
