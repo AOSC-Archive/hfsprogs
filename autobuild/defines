@@ -6,4 +6,9 @@ PKGVER= # Version, Of course it is going to be changed.
 PKGSEC=utils
 PKGDEP="libbsd openssl"
 # COPYING for such a special license
-LICENCE=yes
+
+
+
+####################
+# LICENCE=yes
+# Before appending this line, make sure it works with autobuild3.
