@@ -1,0 +1,9 @@
+# Autobuild configuration for AOSC OSes
+PKGNAME=hfsprogs
+PKGDES="Userspace tools for Apple's HFS. Originally diskdev-cmds."
+# HFS is a great choice for OS X users to transfer....
+PKGVER= # Version, Of course it is going to be changed.
+PKGSEC=utils
+PKGDEP="libbsd openssl"
+# COPYING for such a special license
+LICENCE=yes
