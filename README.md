@@ -3,7 +3,8 @@ hfsprogs
 
 Apple's HFS utils, ported and patched for Linux.
 
-Originally [diskdev-cmds](https://opensource.apple.com/tarballs/diskdev_cmds/).<br />
+Originally [diskdev-cmds](https://opensource.apple.com/tarballs/diskdev_cmds/),
+just like its name on [Gentoo](http://packages.gentoo.org/package/sys-fs/diskdev_cmds).<br />
 * Change `tarballs` to `source` if you want to browse the source.
 
 INSTALL
