@@ -1,6 +1,13 @@
 hfsprogs
 ========
 
+This repository is archived. Let's face it, none of us has the energy to do this.
+
+Apple's latest thing is on GitHub at https://github.com/apple-oss-distributions/diskdev_cmds.
+Debian is behind, but keeping up better than this repo, at https://tracker.debian.org/pkg/hfsprogs.
+
+----
+
 Apple's HFS utils, ported and patched for Linux.
 
 Originally [diskdev-cmds](https://opensource.apple.com/tarballs/diskdev_cmds/),
